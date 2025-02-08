@@ -43,6 +43,9 @@ Maven with Grunt
 POM example of Maven/Grunt with war support:
     https://stackoverflow.com/a/43634164
 
+Another POM example with guide:
+    https://www.beyondjava.net/using-grunt-in-mixed-java-and-javascript-maven-projects
+
 Troubleshooting help for future POM issues:
     https://stackoverflow.com/a/10144507 (+ the answer just after the one linked to)
 
