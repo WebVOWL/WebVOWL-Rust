@@ -103,3 +103,64 @@ src/webvowl/js/graph.js
 src/app/js/app.js
     JSON loading
         l. 379
+
+
+##############
+## The Plan ##
+##############
+- Data Flow
+    (X_input -> OWL2VOWL ->) JSON_VOWL -> SerdeJSON -> Rust_struct -> (Apache AGE?) -> build_graph_fn -> (Apache AGE?) -> PetGraph_datastructure -> (Apache AGE?) -> rust_grapher
+
+- Frontend
+    rust_grapher
+    search_function_using_AGE
+    Leptos
+
+- Backend
+    (OWL2VOWL)
+    SerdeJSON
+    Apache AGE
+    build_graph_fn
+    PetGraph_datastructure
+
+#############
+## Details ##
+#############
+- JSON_VOWL
+    A VOWL-compliant JSON file containing the ontology (e.g. https://github.com/VisualDataWeb/WebVOWL/tree/master/src/app/data)
+
+- SerdeJSON
+    A Rust JSON library for converting JSON to Rust datastructures (https://github.com/serde-rs/json)
+
+- Rust_struct
+    The basic datastructure of Rust. Is similar to a C struct (https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
+
+- Apache AGE
+    A graph database extension for PostgreSQL (https://age.apache.org)
+
+    Will be used together with rust_apache_age, a Rust driver for AGE (https://docs.rs/apache_age/latest/apache_age/)
+
+- build_graph_fn
+    Our custom graph building function. Takes a JSON_VOWL and creates a PetGraph_datastructure from it.
+
+    Study the JSON_VOWL specification when creating.
+    Take inspiration from: https://github.com/iceHtwoO/RustGrapher/blob/HEAD/examples/wikipedia.rs
+
+- rust_grapher
+    A force-directed graph rendering library implemented in Rust (https://github.com/iceHtwoO/RustGrapher)
+    Is the main part of the frontend.
+
+    Will be using our custom graph renderer with support for web browsers (JS, CSS, HTML)
+    Must be adapted from: https://github.com/iceHtwoO/RustGrapher/blob/master/src/renderer.rs
+
+- search_function_using_AGE
+    UI/code that supports typing letters into a textbox to perform searches in the graph.
+    (Functionally similar to the existing implementation)
+
+    Must connect to and make SQL-like? queries to PostgreSQL, using the user input (validate user input!)
+
+- Leptos
+    A full stack Rust web development framework (https://leptos.dev/)
+
+    Should be more performant than "competitors" and also easy? to use.
+    Docs: https://book.leptos.dev/01_introduction.html
