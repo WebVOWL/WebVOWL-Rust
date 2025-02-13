@@ -5,9 +5,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <modelVersion>4.0.0</modelVersion>
 
  <groupId>com.webvowl</groupId> <!-- Maybe change group to github signature -->
- <artifactId>WebVowl</artifactId>
+ <artifactId>webvowl</artifactId>
  <version>1.1.8</version>
- <name>WebVowl</name>
+ <name>WebVOWL</name>
  <packaging>war</packaging>
 
  <properties>
@@ -17,7 +17,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
  </properties>
 
 <repositories>
-
     <!-- Needed to fetch and compile OWL2VOWL git repo -->
     <repository>
         <id>jitpack.io</id>
@@ -26,7 +25,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 </repositories>
 
 <dependencies>
-
     <!-- Include OWL2VOWL git repo to support a wider range of ontology file formats -->
     <dependency>
 	    <groupId>com.github.VisualDataWeb</groupId>
@@ -35,35 +33,27 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 	</dependency>
 </dependencies>
 
-<!-- The rest is very much work in progress -->
- <build>
-     <finalName>${project.name}</finalName>
-     <plugins>
-         <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-war-plugin</artifactId>
-             <version>3.3.2</version>
-	           <configuration>
- 			           <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-	           </configuration>
-         </plugin>
-         <plugin>
-             <groupId>org.apache.maven.plugins</groupId>
-             <artifactId>maven-compiler-plugin</artifactId>
-             <configuration>
-                 <source>11</source>
-                 <target>11</target>
-             </configuration>
-         </plugin>
+<build>
+    <finalName>${project.name}</finalName>
+    <plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+            <source>8</source>
+            <target>8</target>
+        </configuration>
+    </plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+        <configuration>
+            <webappDirectory>src/main/webapp</webappDirectory>
+            <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+        </configuration>
+    </plugin>
 
-         <plugin>
-             <groupId>org.wildfly.plugins</groupId>
-             <artifactId>wildfly-maven-plugin</artifactId>
-             <version>4.0.0.Final</version>
-             <configuration>
-                 <filename>${project.build.finalName}.war</filename>
-             </configuration>
-         </plugin>
-     </plugins>
- </build>
+    </plugins>
+</build>
 </project>
