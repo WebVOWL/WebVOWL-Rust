@@ -4,8 +4,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 <modelVersion>4.0.0</modelVersion>
 
- <groupId>com.webvowl</groupId> <!-- Maybe change group to github signature -->
- <artifactId>webvowl</artifactId>
+ <groupId>com.github.webvowl</groupId>
+ <artifactId>maven-webvowl</artifactId>
  <version>1.1.8</version>
  <name>WebVOWL</name>
  <packaging>war</packaging>
@@ -36,24 +36,27 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <build>
     <finalName>${project.name}</finalName>
     <plugins>
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-            <source>8</source>
-            <target>8</target>
-        </configuration>
-    </plugin>
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.4.0</version>
-        <configuration>
-            <webappDirectory>src/main/webapp</webappDirectory>
-            <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-        </configuration>
-    </plugin>
+        <!-- Java Compiler -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version>
+            <configuration>
+                <source>8</source>
+                <target>8</target>
+            </configuration>
+        </plugin>
 
+        <!-- Package project files into a WAR file -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.4.0</version>
+            <configuration>
+                <webappDirectory>target/webapp</webappDirectory>
+                <!-- <webXml>src/main/webapp/WEB-INF/web.xml</webXml> -->
+            </configuration>
+        </plugin>
     </plugins>
 </build>
 </project>
