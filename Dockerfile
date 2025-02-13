@@ -1,16 +1,15 @@
-###########
-# WebVOWL #
-###########
+# Package project into a WAR file using Maven
+FROM maven:3.6.3-openjdk-8-slim AS build
+RUN mkdir -p /workspace
+WORKDIR /workspace
+COPY pom.xml /workspace
+COPY src /workspace/src
+RUN mvn -B package --file pom.xml -DskipTests
 
-# Use tomcat java 8 alpine as base image
-FROM tomcat:9-jre8-alpine
-
-# Build time arguments (WebVOWL version)
-ARG version=1.1.7
-
-# Download WebVOWL to tomcat webapps directory as root app
-RUN rm -rf /usr/local/tomcat/webapps/* && \
-    wget -O /usr/local/tomcat/webapps/ROOT.war http://vowl.visualdataweb.org/downloads/webvowl_1.1.7.war
+# Use tomcat java 8 temurin as base image for building the final image
+FROM tomcat:9-jre8-temurin
+RUN rm -rf /usr/local/tomcat/webapps/*
+COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 # Run default server
 CMD ["catalina.sh", "run"]

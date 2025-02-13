@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+
+ <groupId>com.github.webvowl</groupId>
+ <artifactId>maven-webvowl</artifactId>
+ <version>1.1.8</version>
+ <name>WebVOWL</name>
+ <packaging>war</packaging>
+
+ <properties>
+     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     <maven.compiler.target>1.8</maven.compiler.target>
+     <maven.compiler.source>1.8</maven.compiler.source>
+ </properties>
+
+<repositories>
+    <!-- Needed to fetch and compile OWL2VOWL git repo -->
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <!-- Include OWL2VOWL git repo to support a wider range of ontology file formats -->
+    <dependency>
+	    <groupId>com.github.VisualDataWeb</groupId>
+	    <artifactId>OWL2VOWL</artifactId>
+	    <version>master-SNAPSHOT</version>
+	</dependency>
+</dependencies>
+
+<build>
+    <finalName>${project.name}</finalName>
+    <plugins>
+        <!-- Java Compiler -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version>
+            <configuration>
+                <source>8</source>
+                <target>8</target>
+            </configuration>
+        </plugin>
+
+        <!-- Package project files into a WAR file -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.4.0</version>
+            <configuration>
+                <webappDirectory>target/webapp</webappDirectory>
+                <!-- <webXml>src/main/webapp/WEB-INF/web.xml</webXml> -->
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+</project>

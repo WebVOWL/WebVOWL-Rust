@@ -1,0 +1,166 @@
+###########################
+## Dev Environment Setup ##
+###########################
+
+VS Code Extensions
+    @id:ms-azuretools.vscode-docker
+    @id:rust-lang.rust-analyzer
+    @id:exodiusstudios.comment-anchors
+    @id:ms-vscode-remote.vscode-remote-extensionpack
+
+WSL
+    https://learn.microsoft.com/en-us/windows/wsl/install
+
+
+Linux Server (LS)
+    (Hypervisor setup and OS install omitted)
+
+    SSH Config Example
+        Host <ALIAS>
+            User <LoginAsUser>
+            HostName <IP_Address>
+            IdentityFile path/to/private/ssh/key
+            IdentitiesOnly yes
+
+
+WSL / LS <--> VS Code
+    https://code.visualstudio.com/docs/remote/wsl
+    https://code.visualstudio.com/docs/remote/ssh
+
+
+Shell recommendation (optional)
+    https://www.nushell.sh/
+    (https://www.nushell.sh/book/configuration.html#remove-welcome-message)
+
+
+#############
+## CI / CD ##
+#############
+
+Maven with Grunt
+    https://github.com/eirslett/frontend-maven-plugin
+
+POM example of Maven/Grunt with war support:
+    https://stackoverflow.com/a/43634164
+
+Another POM example with guide:
+    https://www.beyondjava.net/using-grunt-in-mixed-java-and-javascript-maven-projects
+
+Troubleshooting help for future POM issues:
+    https://stackoverflow.com/a/10144507 (+ the answer just after the one linked to)
+
+Compiling Rust to WASM
+    https://developer.mozilla.org/en-US/docs/WebAssembly/Guides/Rust_to_Wasm
+
+
+TODO
+    Finish pom.xml to allow Maven to compile project and include all necessary dependencies in the war file, ready for deployment
+
+TODO
+    Finish Dockerfile to allow Docker to compile the project (using Maven), build the image, and deploy it on a Tomcat server
+    Help:
+        https://github.com/VisualDataWeb/OWL2VOWL/blob/master/Dockerfile
+        https://github.com/DrSnowbird/WebVOWL-docker
+
+TODO
+    Figure out where WASM files should be placed in order to be included in the war file
+    (And possibly automate this process. Maybe using Grunt or Dockerfile)
+
+TODO
+    Figure out if travis is needed if Maven is used
+
+
+#######################################
+## Version reminder (delete shortly) ##
+#######################################
+
+OWL2VOWL
+    Java 8
+
+Tomcat
+    V9 supports Java 8
+
+Maven
+    Must support Java 8
+
+
+
+########################################################
+## Location of functionality that we wanna improve on ##
+########################################################
+
+src/webvowl/js/graph.js
+    Search
+        search operation
+        l. 197
+
+        search dict generation
+        ll. 1437-1481
+
+    Graph rendering
+        <Entire file>
+
+src/app/js/app.js
+    JSON loading
+        l. 379
+
+
+##############
+## The Plan ##
+##############
+- Data Flow
+    (X_input -> OWL2VOWL ->) JSON_VOWL -> SerdeJSON -> Rust_struct -> (Apache AGE?) -> build_graph_fn -> (Apache AGE?) -> PetGraph_datastructure -> (Apache AGE?) -> rust_grapher
+
+- Frontend
+    rust_grapher
+    search_function_using_AGE
+    Leptos
+
+- Backend
+    (OWL2VOWL)
+    SerdeJSON
+    Apache AGE
+    build_graph_fn
+    PetGraph_datastructure
+
+#############
+## Details ##
+#############
+- JSON_VOWL
+    A VOWL-compliant JSON file containing the ontology (e.g. https://github.com/VisualDataWeb/WebVOWL/tree/master/src/app/data)
+
+- SerdeJSON
+    A Rust JSON library for converting JSON to Rust datastructures (https://github.com/serde-rs/json)
+
+- Rust_struct
+    The basic datastructure of Rust. Is similar to a C struct (https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
+
+- Apache AGE
+    A graph database extension for PostgreSQL (https://age.apache.org)
+
+    Will be used together with rust_apache_age, a Rust driver for AGE (https://docs.rs/apache_age/latest/apache_age/)
+
+- build_graph_fn
+    Our custom graph building function. Takes a JSON_VOWL and creates a PetGraph_datastructure from it.
+
+    Study the JSON_VOWL specification when creating.
+    Take inspiration from: https://github.com/iceHtwoO/RustGrapher/blob/HEAD/examples/wikipedia.rs
+
+- rust_grapher
+    A force-directed graph rendering library implemented in Rust (https://github.com/iceHtwoO/RustGrapher)
+    Is the main part of the frontend.
+
+    Will be using our custom graph renderer with support for web browsers (JS, CSS, HTML)
+    Must be adapted from: https://github.com/iceHtwoO/RustGrapher/blob/master/src/renderer.rs
+
+- search_function_using_AGE
+    UI/code that supports typing letters into a textbox to perform searches in the graph.
+    (Functionally similar to the existing implementation)
+
+    Must connect to and make SQL-like? queries to PostgreSQL, using the user input (validate user input!)
+
+- Leptos
+    A full stack Rust web development framework (https://leptos.dev/)
+
+    Should be more performant than "competitors" and also easy? to use.
+    Docs: https://book.leptos.dev/01_introduction.html
