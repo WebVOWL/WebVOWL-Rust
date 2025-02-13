@@ -16,3 +16,6 @@ webvowl*.zip
 
 # NetBeans files
 **/nbproject/**
+
+# Maven build files
+/target
