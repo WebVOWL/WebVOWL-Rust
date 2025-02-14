@@ -1,6 +1,6 @@
 services:
     webvowl:
-        image: ghcr.io/webvowl/webvowl:latest
+        image: ghcr.io/webvowl/webvowl:master
         container_name: webvowl
         ports:
             - 8080:8080
