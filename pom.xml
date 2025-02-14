@@ -54,7 +54,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
             <version>3.4.0</version>
             <configuration>
                 <webappDirectory>target/webapp</webappDirectory>
-                <!-- <webXml>src/main/webapp/WEB-INF/web.xml</webXml> -->
+                <webXml>src/packaging/web.xml</webXml>
+                <webResources>
+                    <resource>
+                    <!-- this is relative to the pom.xml directory -->
+                    <directory>src/app</directory>
+                    </resource>
+                </webResources>
             </configuration>
         </plugin>
     </plugins>
