@@ -1,9 +1,7 @@
-version: '3'
-
 services:
-    
-    server:
-        build: .
-        command: catalina.sh run
+    webvowl:
+        image: ghcr.io/webvowl/webvowl:latest
+        container_name: webvowl
         ports:
             - 8080:8080
+        restart: unless-stopped
