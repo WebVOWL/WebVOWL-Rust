@@ -11,5 +11,7 @@ FROM tomcat:9-jre8-temurin
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
+EXPOSE 8080
+
 # Run default server
 CMD ["catalina.sh", "run"]
