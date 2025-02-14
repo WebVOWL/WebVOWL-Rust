@@ -1,13 +1,16 @@
-var path = require("path");
-var webpack = require("webpack");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+"use strict";
+import { paths } from "config";
+
+let path = require("path");
+let webpack = require("webpack");
+let CopyWebpackPlugin = require("copy-webpack-plugin");
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
 	cache: true,
 	entry: {
-		webvowl: "./src/webvowl/js/entry.js",
-		"webvowl.app": "./src/app/js/entry.js"
+		webvowl: `./${paths.backendPath}/js/entry.js`,
+		"webvowl.app": `./${paths.frontendPath}/js/entry.js`
 	},
 	output: {
 		path: path.join(__dirname, "deploy/"),
@@ -19,12 +22,12 @@ module.exports = {
 	},
 	module: {
 		loaders: [
-			{test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")}
+			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") }
 		]
 	},
 	plugins: [
 		new CopyWebpackPlugin([
-			{context: "src/app", from: "data/**/*"}
+			{ context: paths.frontendPath, from: "data/**/*" }
 		]),
 		new ExtractTextPlugin("css/[name].css"),
 		new webpack.ProvidePlugin({
