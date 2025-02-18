@@ -1,3 +1,9 @@
+const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision
+const Downloader = require('puppeteer/utils/ChromiumDownloader')
+const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision)
+
+process.env.CHROME_BIN = revisionInfo.executablePath
+
 module.exports = function (config) {
 	config.set({
 		basePath: "../",
@@ -10,10 +16,10 @@ module.exports = function (config) {
 			"test/unit/index.js": ["webpack"]
 		},
 		reporters: ["spec"],
-		browsers: ["PhantomJS"],
+		browsers: ['ChromeHeadless'],
 		plugins: [
 			require("karma-jasmine"),
-			require("karma-phantomjs-launcher"),
+			require("karma-chrome-launcher"),
 			require("karma-spec-reporter"),
 			require("karma-webpack")
 		],
