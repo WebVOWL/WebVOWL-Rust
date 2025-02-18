@@ -1,7 +1,6 @@
-import { paths } from "../../../../../config";
-
 const process = require('process')
 process.chdir("../../../../..")
+const paths = require("./config.js").path_func;
 
 let OwlClass = require(`${paths.backendPath}/js/elements/nodes/implementations/OwlClass`);
 let RdfsDatatype = require(`${paths.backendPath}/js/elements/nodes/implementations/RdfsDatatype`);

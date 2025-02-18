@@ -1,7 +1,6 @@
-import { paths } from "../../config";
-
 const process = require('process')
 process.chdir("../../../../..")
+const paths = require("./config.js").path_func;
 
 describe("Truncating of text", function () {
 	let tools;
