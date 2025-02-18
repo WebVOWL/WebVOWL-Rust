@@ -1,35 +1,56 @@
 "use strict";
-import { paths } from "config";
-
-let path = require("path");
-let webpack = require("webpack");
-let CopyWebpackPlugin = require("copy-webpack-plugin");
-let ExtractTextPlugin = require("extract-text-webpack-plugin");
+const paths = require("./config.js").path_func;
+const path = require('path');
+const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
 	cache: true,
+	mode: 'production',
 	entry: {
 		webvowl: `./${paths.backendPath}/js/entry.js`,
 		"webvowl.app": `./${paths.frontendPath}/js/entry.js`
 	},
 	output: {
-		path: path.join(__dirname, "deploy/"),
-		publicPath: "",
+		path: path.resolve(__dirname, paths.deployPath),
+		publicPath: 'auto',
 		filename: "js/[name].js",
 		chunkFilename: "js/[chunkhash].js",
-		libraryTarget: "assign",
-		library: "[name]"
+		// Fix Reference Error: https://stackoverflow.com/a/34361312
+		library: {
+			name: '[name]',
+			type: 'assign',
+		},
+	},
+	optimization: {
+		minimize: false,
+		minimizer: [
+			new TerserPlugin({
+				minify: TerserPlugin.uglifyJsMinify,
+				// `terserOptions` options will be passed to `uglify-js`
+				// Link to options - https://github.com/mishoo/UglifyJS#minify-options
+				terserOptions: {},
+			})
+		],
 	},
 	module: {
-		loaders: [
-			{ test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") }
-		]
+		rules: [
+			{
+				test: /\.css$/i,
+				use: [
+					MiniCssExtractPlugin.loader,
+					"css-loader",
+				],
+			},
+		],
 	},
 	plugins: [
-		new CopyWebpackPlugin([
-			{ context: paths.frontendPath, from: "data/**/*" }
-		]),
-		new ExtractTextPlugin("css/[name].css"),
+		new CopyWebpackPlugin(
+			{ patterns: [{ from: `${paths.frontendPath}/data/**/*`, to: `${paths.deployPath}/data` }] }
+		),
+		new MiniCssExtractPlugin({ filename: "css/[name].css" }),
 		new webpack.ProvidePlugin({
 			d3: "d3"
 		})

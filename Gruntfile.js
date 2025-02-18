@@ -1,6 +1,5 @@
 "use strict";
-import { paths } from "config";
-
+const paths = require("./config.js").path_func;
 module.exports = function (grunt) {
 	require("load-grunt-tasks")(grunt);
 	let webpack = require("webpack");
@@ -23,24 +22,24 @@ module.exports = function (grunt) {
 		},
 		clean: {
 			deploy: paths.deployPath,
-			zip: "webvowl-*.zip",
-			testOntology: paths.deployPath + "data/benchmark.json"
+			// zip: paths.deployZipPath + "/webvowl-*.zip",
+			testOntology: paths.deployPath + "/data/benchmark.json",
 		},
-		compress: {
-			deploy: {
-				options: {
-					archive: function () {
-						let branchInfo = grunt.config("gitinfo.local.branch.current");
-						return "webvowl-" + branchInfo.name + "-" + branchInfo.shortSHA + ".zip";
-					},
-					level: 9,
-					pretty: true
-				},
-				files: [
-					{ expand: true, cwd: "deploy/", src: ["**"], dest: "webvowl/" }
-				]
-			}
-		},
+		// compress: {
+		// 	deploy: {
+		// 		options: {
+		// 			archive: function () {
+		// 				let branchInfo = grunt.config("gitinfo.local.branch.current");
+		// 				return "webvowl-" + branchInfo.name + "-" + branchInfo.shortSHA + ".zip";
+		// 			},
+		// 			level: 9,
+		// 			pretty: true
+		// 		},
+		// 		files: [
+		// 			{ expand: true, cwd: paths.deployPath, src: ["**"], dest: paths.deployZipPath }
+		// 		]
+		// 	}
+		// },
 		// connect: {
 		// 	devserver: {
 		// 		options: {
@@ -97,11 +96,11 @@ module.exports = function (grunt) {
 				jshintrc: true
 			},
 			source: [`${paths.webappPath}/**/*.js`],
-			tests: [`${testPath}/*/**/*.js`]
+			tests: [`${paths.testPath}/*/**/*.js`]
 		},
 		karma: {
 			options: {
-				configFile: `${testPath}/karma.conf.js`
+				configFile: `${paths.testPath}/karma.conf.js`
 			},
 			dev: {},
 			continuous: {
@@ -119,18 +118,18 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: [
-					{ expand: true, cwd: "deploy/js/", src: "webvowl*.js", dest: "deploy/js/" }
+					{ expand: true, cwd: `${paths.deployPath}/js/`, src: "webvowl*.js", dest: "." }
 				]
 			}
 		},
 		webpack: {
 			options: webpackConfig,
 			build: {
-				plugins: webpackConfig.plugins.concat(
-					// minimize the deployed code
-					new webpack.optimize.UglifyJsPlugin(),
-					new webpack.optimize.DedupePlugin()
-				)
+				// plugins: webpackConfig.plugins.concat(
+				// 	// minimize the deployed code
+				// 	new webpack.optimize.UglifyJsPlugin(),
+				// 	new webpack.optimize.DedupePlugin()
+				// )
 			},
 			"build-dev": {
 				devtool: "sourcemap",
@@ -145,7 +144,7 @@ module.exports = function (grunt) {
 				}
 			},
 			js: {
-				files: [`${paths.frontendPath}/**/*`, `${paths.backendPath}/**/*`], // TODO: Remove backend files when JS has been rewritten to Rust
+				files: [`${paths.frontendPath}/**/*.js`, `${paths.backendPath}/**/*.js`], // TODO: Remove backend files when JS has been rewritten to Rust
 				tasks: ["webpack:build-dev", "post-js"],
 				options: {
 					livereload: true,
@@ -164,11 +163,12 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask("default", ["release"]);
-	grunt.registerTask("pre-js", ["clean:deploy", "clean:zip", "copy"]);
+	// grunt.registerTask("pre-js", ["clean:deploy", "clean:zip", "copy"]);
+	grunt.registerTask("pre-js", ["clean:deploy", "copy"]);
 	grunt.registerTask("post-js", ["replace"]);
 	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "post-js", "htmlbuild:dev"]);
 	grunt.registerTask("release", ["pre-js", "webpack:build", "post-js", "htmlbuild:release", "clean:testOntology"]);
-	grunt.registerTask("zip", ["gitinfo", "release", "compress"]);
+	// grunt.registerTask("zip", ["gitinfo", "release", "compress"]);
 	// grunt.registerTask("webserver", ["package", "connect:devserver", "watch"]);
 	grunt.registerTask("test", ["karma:dev"]);
 	grunt.registerTask("test-ci", ["karma:continuous"]);
