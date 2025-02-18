@@ -59,7 +59,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 
             <configuration>
                 <installDirectory>target</installDirectory>
-                <workingDirectory>src/main/webapp</workingDirectory>
             </configuration>
 
             <executions>
@@ -70,7 +69,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                     </goals>
                     <phase>generate-resources</phase>
                     <configuration>
-                        <nodeVersion>v23.8.0</nodeVersion>
+                        <nodeVersion>v22.14.0</nodeVersion>
                     </configuration>
                 </execution>
 
@@ -85,17 +84,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                     </configuration>
                 </execution>
 
-                <execution> <!--If IDE reports execution failure, disregard -->
-                    <id>grunt build</id>
+                <execution>
+                    <id>grunt release</id>
                     <goals>
                         <goal>grunt</goal>
                     </goals>
                     <phase>generate-resources</phase>
                     <configuration>
-                        <!-- optional: if not specified, it will run Grunt's default task
-                            (and you can remove this whole <configuration> section.)
-                        -->
-                        <arguments>build</arguments>
+                        <arguments>release</arguments>
                     </configuration>
                 </execution>
             </executions>
@@ -110,15 +106,16 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
             <version>3.4.0</version>
             <configuration>
                 <failOnMissingWebXml>true</failOnMissingWebXml>
-                <warSourceExcludes>node_modules/**</warSourceExcludes>
+                <warSourceDirectory>target/deploy</warSourceDirectory>
+                <packagingExcludes>node_modules/**</packagingExcludes>
                 <webappDirectory>target/webapp</webappDirectory>
                 <webXml>src/main/WEB-INF/web.xml</webXml>
-                <webResources>
+                <!-- <webResources>
                     <resource>
-                    <!-- this is relative to the pom.xml directory -->
-                    <directory>src/target/deploy</directory>
+                     this is relative to the pom.xml directory
+                    <directory>target/deploy</directory>
                     </resource>
-                </webResources>
+                </webResources> -->
             </configuration>
         </plugin>
     </plugins>
