@@ -4,24 +4,25 @@ const path = require('path');
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
 	cache: true,
-	mode: 'production',
 	entry: {
-		webvowl: `./${paths.backendPath}/js/entry.js`,
-		"webvowl.app": `./${paths.frontendPath}/js/entry.js`
+		back: `./${paths.backendPath}/js/entry.js`,
+		front: `./${paths.frontendPath}/js/entry.js`
 	},
 	output: {
 		path: path.resolve(__dirname, paths.deployPath),
 		publicPath: 'auto',
 		filename: "js/[name].js",
 		chunkFilename: "js/[chunkhash].js",
-		// Fix Reference Error: https://stackoverflow.com/a/34361312
+		enabledWasmLoadingTypes: ['fetch'],
+		globalObject: 'this',
 		library: {
-			name: '[name]',
-			type: 'assign',
+			name: 'webvowl',
+			type: 'umd',
 		},
 	},
 	optimization: {
@@ -31,8 +32,9 @@ module.exports = {
 				minify: TerserPlugin.uglifyJsMinify,
 				// `terserOptions` options will be passed to `uglify-js`
 				// Link to options - https://github.com/mishoo/UglifyJS#minify-options
-				terserOptions: {},
-			})
+				terserOptions: { sourceMap: true },
+			}),
+			new CssMinimizerPlugin()
 		],
 	},
 	module: {
@@ -48,14 +50,11 @@ module.exports = {
 	},
 	plugins: [
 		new CopyWebpackPlugin(
-			{ patterns: [{ from: `${paths.frontendPath}/data/**/*`, to: `${paths.deployPath}/data` }] }
+			{ patterns: [{ context: `${paths.frontendPath}/data`, from: "./*", to: `data` }] }
 		),
 		new MiniCssExtractPlugin({ filename: "css/[name].css" }),
 		new webpack.ProvidePlugin({
 			d3: "d3"
 		})
-	],
-	externals: {
-		"d3": "d3"
-	}
+	]
 };
