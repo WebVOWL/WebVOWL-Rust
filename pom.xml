@@ -16,6 +16,60 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
      <maven.compiler.source>1.8</maven.compiler.source>
  </properties>
 
+<profiles>
+    <profile>
+        <id>dev-server</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.15.1</version>
+                    <executions>
+                        <execution>
+                            <id>grunt webserver</id>
+                            <goals>
+                                <goal>grunt</goal>
+                            </goals>
+                            <phase>generate-resources</phase>
+                            <configuration>
+                                <arguments>webserver</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+    <profile>
+        <id>production</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.15.1</version>
+                    <executions>
+                        <execution>
+                            <id>grunt release</id>
+                            <goals>
+                                <goal>grunt</goal>
+                            </goals>
+                            <phase>generate-resources</phase>
+                            <configuration>
+                                <arguments>release</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
+
 <repositories>
     <!-- Needed to fetch and compile OWL2VOWL git repo -->
     <repository>
@@ -58,7 +112,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
             <version>1.15.1</version>
 
             <configuration>
-                <installDirectory>target</installDirectory>
+                <installDirectory>.</installDirectory>
             </configuration>
 
             <executions>
@@ -81,17 +135,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                     <phase>generate-resources</phase>
                     <configuration>
                         <arguments>install</arguments>
-                    </configuration>
-                </execution>
-
-                <execution>
-                    <id>grunt release</id>
-                    <goals>
-                        <goal>grunt</goal>
-                    </goals>
-                    <phase>generate-resources</phase>
-                    <configuration>
-                        <arguments>release</arguments>
                     </configuration>
                 </execution>
             </executions>
