@@ -1,8 +1,7 @@
 var css = require("css"),
 	fs = require("fs"),
-	filePath = "../../src/webvowl/css/vowl.css";
-
-fs.readFile(filePath, {encoding: "utf8"}, function (err, data) {
+	filePath = "../../main/webapp/backend/css/vowl.css";
+fs.readFile(filePath, { encoding: "utf8" }, function (err, data) {
 	if (err) {
 		console.log(err);
 	} else {
@@ -73,7 +72,7 @@ function d3RuleBuilder() {
 	};
 
 	builder.addRule = function (name, value) {
-		rules.push({name: name, value: value});
+		rules.push({ name: name, value: value });
 		return builder;
 	};
 
