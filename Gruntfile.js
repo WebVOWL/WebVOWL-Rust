@@ -2,7 +2,6 @@
 const paths = require("./config.js").path_func;
 module.exports = function (grunt) {
 	require("load-grunt-tasks")(grunt);
-	let webpack = require("webpack");
 	let webpackConfig = require("./webpack.config.js");
 
 	// Project configuration.
@@ -40,31 +39,26 @@ module.exports = function (grunt) {
 		// 		]
 		// 	}
 		// },
-		// connect: {
-		// 	devserver: {
-		// 		options: {
-		// 			protocol: "http",
-		// 			hostname: "localhost",
-		// 			port: 8000,
-		// 			base: paths.deployPath,
-		// 			directory: paths.deployPath,
-		// 			livereload: true,
-		// 			open: "http://localhost:8000/",
-		// 			middleware: function (connect, options, middlewares) {
-		// 				return middlewares.concat([
-		// 					require("serve-favicon")("deploy/favicon.ico"),
-		// 					require("serve-static")(options.base[0])
-		// 				]);
-		// 			}
-		// 		}
-		// 	}
-		// },
+		connect: {
+			devserver: {
+				options: {
+					protocol: "http",
+					hostname: "localhost",
+					port: 8000,
+					base: paths.deployPath,
+					directory: paths.deployPath,
+					livereload: true,
+					open: "http://localhost:8000/",
+					middleware: function (connect, options, middlewares) {
+						return middlewares.concat([
+							require("serve-favicon")(`${paths.deployPath}/favicon.ico`),
+							require("serve-static")(options.base[0])
+						]);
+					}
+				}
+			}
+		},
 		copy: {
-			dependencies: {
-				files: [
-					{ expand: true, cwd: `${paths.nodeModulePath}/d3/`, src: ["d3.min.js"], dest: paths.deployPath + "/js/" }
-				]
-			},
 			static: {
 				files: [
 					{ expand: true, cwd: paths.webappPath, src: ["favicon.ico"], dest: paths.deployPath },
@@ -125,40 +119,36 @@ module.exports = function (grunt) {
 		webpack: {
 			options: webpackConfig,
 			build: {
-				// plugins: webpackConfig.plugins.concat(
-				// 	// minimize the deployed code
-				// 	new webpack.optimize.UglifyJsPlugin(),
-				// 	new webpack.optimize.DedupePlugin()
-				// )
+				mode: 'production',
 			},
 			"build-dev": {
-				devtool: "sourcemap",
-				debug: true
+				mode: 'development',
+				devtool: 'inline-source-map'
 			}
 		},
 		watch: {
-			configs: {
-				files: ["Gruntfile.js"],
-				options: {
-					reload: true
-				}
-			},
-			js: {
-				files: [`${paths.frontendPath}/**/*.js`, `${paths.backendPath}/**/*.js`], // TODO: Remove backend files when JS has been rewritten to Rust
-				tasks: ["webpack:build-dev", "post-js"],
-				options: {
-					livereload: true,
-					spawn: false
-				}
-			},
-			html: {
-				files: [`${paths.webappPath}/**/*.html`],
-				tasks: ["htmlbuild:dev"],
-				options: {
-					livereload: true,
-					spawn: false
-				}
-			}
+			// configs: {
+			// 	files: ["Gruntfile.js"],
+			// 	options: {
+			// 		reload: true
+			// 	}
+			// },
+			// js: {
+			// 	files: [`${paths.frontendPath}/**/*.js`, `${paths.backendPath}/**/*.js`], // TODO: Remove backend files when JS has been rewritten to Rust
+			// 	tasks: ["webpack:build-dev", "post-js"],
+			// 	options: {
+			// 		livereload: true,
+			// 		spawn: false
+			// 	}
+			// },
+			// html: {
+			// 	files: [`${paths.webappPath}/**/*.html`],
+			// 	tasks: ["htmlbuild:dev"],
+			// 	options: {
+			// 		livereload: true,
+			// 		spawn: false
+			// 	}
+			// }
 		}
 	});
 
@@ -169,7 +159,7 @@ module.exports = function (grunt) {
 	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "post-js", "htmlbuild:dev"]);
 	grunt.registerTask("release", ["pre-js", "webpack:build", "post-js", "htmlbuild:release", "clean:testOntology"]);
 	// grunt.registerTask("zip", ["gitinfo", "release", "compress"]);
-	// grunt.registerTask("webserver", ["package", "connect:devserver", "watch"]);
+	grunt.registerTask("webserver", ["package", "connect:devserver", "watch"]);
 	grunt.registerTask("test", ["karma:dev"]);
 	grunt.registerTask("test-ci", ["karma:continuous"]);
 };
