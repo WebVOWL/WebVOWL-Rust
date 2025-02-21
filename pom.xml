@@ -90,7 +90,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 </dependencies>
 
 <build>
-    <finalName>${project.name}</finalName>
+    <finalName>${project.name}_${project.version}</finalName>
     <plugins>
         <!-- Java Compiler -->
         <plugin>
