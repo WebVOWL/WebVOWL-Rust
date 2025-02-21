@@ -1,8 +1,12 @@
 "use strict";
-const paths = require("./config.js").path_func;
+
 module.exports = function (grunt) {
+
 	require("load-grunt-tasks")(grunt);
-	let webpackConfig = require("./webpack.config.js");
+	var webpack = require("webpack");
+	var webpackConfig = require("./webpack.config.js");
+
+	var deployPath = "deploy/";
 
 	// Project configuration.
 	grunt.initConfig({
@@ -20,38 +24,38 @@ module.exports = function (grunt) {
 			}
 		},
 		clean: {
-			deploy: paths.deployPath,
-			// zip: paths.deployZipPath + "/webvowl-*.zip",
-			testOntology: paths.deployPath + "/data/benchmark.json",
+			deploy: deployPath,
+			zip: "webvowl-*.zip",
+			testOntology: deployPath + "data/benchmark.json"
 		},
-		// compress: {
-		// 	deploy: {
-		// 		options: {
-		// 			archive: function () {
-		// 				let branchInfo = grunt.config("gitinfo.local.branch.current");
-		// 				return "webvowl-" + branchInfo.name + "-" + branchInfo.shortSHA + ".zip";
-		// 			},
-		// 			level: 9,
-		// 			pretty: true
-		// 		},
-		// 		files: [
-		// 			{ expand: true, cwd: paths.deployPath, src: ["**"], dest: paths.deployZipPath }
-		// 		]
-		// 	}
-		// },
+		compress: {
+			deploy: {
+				options: {
+					archive: function() {
+						var branchInfo = grunt.config("gitinfo.local.branch.current");
+						return "webvowl-" + branchInfo.name + "-" + branchInfo.shortSHA + ".zip";
+					},
+					level: 9,
+					pretty: true
+				},
+				files: [
+					{expand: true, cwd: "deploy/", src: ["**"], dest: "webvowl/"}
+				]
+			}
+		},
 		connect: {
 			devserver: {
 				options: {
 					protocol: "http",
 					hostname: "localhost",
 					port: 8000,
-					base: paths.deployPath,
-					directory: paths.deployPath,
+					base: deployPath,
+					directory: deployPath,
 					livereload: true,
 					open: "http://localhost:8000/",
 					middleware: function (connect, options, middlewares) {
 						return middlewares.concat([
-							require("serve-favicon")(`${paths.deployPath}/favicon.ico`),
+							require("serve-favicon")("deploy/favicon.ico"),
 							require("serve-static")(options.base[0])
 						]);
 					}
@@ -59,10 +63,15 @@ module.exports = function (grunt) {
 			}
 		},
 		copy: {
+			dependencies: {
+				files: [
+					{expand: true, cwd: "node_modules/d3/", src: ["d3.min.js"], dest: deployPath + "/js/"}
+				]
+			},
 			static: {
 				files: [
-					{ expand: true, cwd: paths.webappPath, src: ["favicon.ico"], dest: paths.deployPath },
-					{ expand: true, src: ["license.txt"], dest: paths.deployPath }
+					{expand: true, cwd: "src/", src: ["favicon.ico"], dest: deployPath},
+					{expand: true, src: ["license.txt"], dest: deployPath}
 				]
 			}
 		},
@@ -76,25 +85,25 @@ module.exports = function (grunt) {
 				}
 			},
 			dev: {
-				src: `${paths.webappPath}/index.html`,
-				dest: paths.deployPath
+				src: "src/index.html",
+				dest: deployPath
 			},
 			release: {
 				// required for removing the benchmark ontology from the selection menu
-				src: `${paths.webappPath}/index.html`,
-				dest: paths.deployPath
+				src: "src/index.html",
+				dest: deployPath
 			}
 		},
 		jshint: {
 			options: {
 				jshintrc: true
 			},
-			source: [`${paths.webappPath}/**/*.js`],
-			tests: [`${paths.testPath}/*/**/*.js`]
+			source: ["src/**/*.js"],
+			tests: ["test/*/**/*.js"]
 		},
 		karma: {
 			options: {
-				configFile: `${paths.testPath}/karma.conf.js`
+				configFile: "test/karma.conf.js"
 			},
 			dev: {},
 			continuous: {
@@ -112,53 +121,58 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: [
-					{ expand: true, cwd: `${paths.deployPath}/js/`, src: "webvowl*.js", dest: "." }
+					{expand: true, cwd: "deploy/js/", src: "webvowl*.js", dest: "deploy/js/"}
 				]
 			}
 		},
 		webpack: {
 			options: webpackConfig,
 			build: {
-				mode: 'production',
+				plugins: webpackConfig.plugins.concat(
+          // minimize the deployed code
+          //new webpack.optimize.UglifyJsPlugin(),
+					new webpack.optimize.DedupePlugin()
+
+				)
 			},
 			"build-dev": {
-				mode: 'development',
-				devtool: 'inline-source-map'
+				devtool: "sourcemap",
+				debug: true
 			}
 		},
 		watch: {
-			// configs: {
-			// 	files: ["Gruntfile.js"],
-			// 	options: {
-			// 		reload: true
-			// 	}
-			// },
-			// js: {
-			// 	files: [`${paths.frontendPath}/**/*.js`, `${paths.backendPath}/**/*.js`], // TODO: Remove backend files when JS has been rewritten to Rust
-			// 	tasks: ["webpack:build-dev", "post-js"],
-			// 	options: {
-			// 		livereload: true,
-			// 		spawn: false
-			// 	}
-			// },
-			// html: {
-			// 	files: [`${paths.webappPath}/**/*.html`],
-			// 	tasks: ["htmlbuild:dev"],
-			// 	options: {
-			// 		livereload: true,
-			// 		spawn: false
-			// 	}
-			// }
+			configs: {
+				files: ["Gruntfile.js"],
+				options: {
+					reload: true
+				}
+			},
+			js: {
+				files: ["src/app/**/*", "src/webvowl/**/*"],
+				tasks: ["webpack:build-dev", "post-js"],
+				options: {
+					livereload: true,
+					spawn: false
+				}
+			},
+			html: {
+				files: ["src/**/*.html"],
+				tasks: ["htmlbuild:dev"],
+				options: {
+					livereload: true,
+					spawn: false
+				}
+			}
 		}
 	});
 
+
 	grunt.registerTask("default", ["release"]);
-	// grunt.registerTask("pre-js", ["clean:deploy", "clean:zip", "copy"]);
-	grunt.registerTask("pre-js", ["clean:deploy", "copy"]);
+	grunt.registerTask("pre-js", ["clean:deploy", "clean:zip", "copy"]);
 	grunt.registerTask("post-js", ["replace"]);
 	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "post-js", "htmlbuild:dev"]);
 	grunt.registerTask("release", ["pre-js", "webpack:build", "post-js", "htmlbuild:release", "clean:testOntology"]);
-	// grunt.registerTask("zip", ["gitinfo", "release", "compress"]);
+	grunt.registerTask("zip", ["gitinfo", "release", "compress"]);
 	grunt.registerTask("webserver", ["package", "connect:devserver", "watch"]);
 	grunt.registerTask("test", ["karma:dev"]);
 	grunt.registerTask("test-ci", ["karma:continuous"]);
