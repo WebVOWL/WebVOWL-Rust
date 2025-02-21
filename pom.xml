@@ -17,7 +17,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
  </properties>
 
 <build>
-    <finalName>${project.name}_${version}</finalName>
+    <finalName>${project.name}_${project.version}</finalName>
     <plugins>
         <!-- Build frontend files and include in the final build
             https://mvnrepository.com/artifact/com.github.eirslett/frontend-maven-plugin
