@@ -3,6 +3,9 @@
 /node
 *lock.json
 
+# Rust
+Cargo.lock
+
 # IntelliJ  files
 *.iml
 .idea/
@@ -15,9 +18,7 @@
 deploy/**
 !deploy/.htaccess
 webvowl*.zip
+target
 
 # NetBeans files
 **/nbproject/**
-
-# Maven build files
-/target
