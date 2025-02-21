@@ -1,12 +1,9 @@
 "use strict";
-
+var paths = require("./config.js").path_func;
 module.exports = function (grunt) {
-
 	require("load-grunt-tasks")(grunt);
 	var webpack = require("webpack");
 	var webpackConfig = require("./webpack.config.js");
-
-	var deployPath = "deploy/";
 
 	// Project configuration.
 	grunt.initConfig({
@@ -24,14 +21,14 @@ module.exports = function (grunt) {
 			}
 		},
 		clean: {
-			deploy: deployPath,
+			deploy: paths.deployPath,
 			zip: "webvowl-*.zip",
-			testOntology: deployPath + "data/benchmark.json"
+			testOntology: paths.deployPath + "data/benchmark.json"
 		},
 		compress: {
 			deploy: {
 				options: {
-					archive: function() {
+					archive: function () {
 						var branchInfo = grunt.config("gitinfo.local.branch.current");
 						return "webvowl-" + branchInfo.name + "-" + branchInfo.shortSHA + ".zip";
 					},
@@ -39,7 +36,7 @@ module.exports = function (grunt) {
 					pretty: true
 				},
 				files: [
-					{expand: true, cwd: "deploy/", src: ["**"], dest: "webvowl/"}
+					{ expand: true, cwd: paths.deployPath, src: ["**"], dest: "webvowl/" }
 				]
 			}
 		},
@@ -49,13 +46,13 @@ module.exports = function (grunt) {
 					protocol: "http",
 					hostname: "localhost",
 					port: 8000,
-					base: deployPath,
-					directory: deployPath,
+					base: paths.deployPath,
+					directory: paths.deployPath,
 					livereload: true,
 					open: "http://localhost:8000/",
 					middleware: function (connect, options, middlewares) {
 						return middlewares.concat([
-							require("serve-favicon")("deploy/favicon.ico"),
+							require("serve-favicon")(`${paths.deployPath}/favicon.ico`),
 							require("serve-static")(options.base[0])
 						]);
 					}
@@ -65,13 +62,13 @@ module.exports = function (grunt) {
 		copy: {
 			dependencies: {
 				files: [
-					{expand: true, cwd: "node_modules/d3/", src: ["d3.min.js"], dest: deployPath + "/js/"}
+					{ expand: true, cwd: `${paths.nodeModulePath}/d3/`, src: ["d3.min.js"], dest: paths.deployPath + "/js/" }
 				]
 			},
 			static: {
 				files: [
-					{expand: true, cwd: "src/", src: ["favicon.ico"], dest: deployPath},
-					{expand: true, src: ["license.txt"], dest: deployPath}
+					{ expand: true, cwd: paths.srcPath, src: ["favicon.ico"], dest: paths.deployPath },
+					{ expand: true, src: ["license.txt"], dest: paths.deployPath }
 				]
 			}
 		},
@@ -85,25 +82,25 @@ module.exports = function (grunt) {
 				}
 			},
 			dev: {
-				src: "src/index.html",
-				dest: deployPath
+				src: `${paths.srcPath}/index.html`,
+				dest: paths.deployPath
 			},
 			release: {
 				// required for removing the benchmark ontology from the selection menu
-				src: "src/index.html",
-				dest: deployPath
+				src: `${paths.srcPath}/index.html`,
+				dest: paths.deployPath
 			}
 		},
 		jshint: {
 			options: {
 				jshintrc: true
 			},
-			source: ["src/**/*.js"],
-			tests: ["test/*/**/*.js"]
+			source: [`${paths.srcPath}/**/*.js`],
+			tests: [`${paths.testPath}/*/**/*.js`]
 		},
 		karma: {
 			options: {
-				configFile: "test/karma.conf.js"
+				configFile: `${paths.testPath}/karma.conf.js`
 			},
 			dev: {},
 			continuous: {
@@ -121,7 +118,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				files: [
-					{expand: true, cwd: "deploy/js/", src: "webvowl*.js", dest: "deploy/js/"}
+					{ expand: true, cwd: `${paths.deployPath}/js/`, src: "webvowl*.js", dest: `${paths.deployPath}/js/` }
 				]
 			}
 		},
@@ -129,10 +126,9 @@ module.exports = function (grunt) {
 			options: webpackConfig,
 			build: {
 				plugins: webpackConfig.plugins.concat(
-          // minimize the deployed code
-          //new webpack.optimize.UglifyJsPlugin(),
+					// minimize the deployed code
+					// new webpack.optimize.UglifyJsPlugin(),
 					new webpack.optimize.DedupePlugin()
-
 				)
 			},
 			"build-dev": {
@@ -148,7 +144,7 @@ module.exports = function (grunt) {
 				}
 			},
 			js: {
-				files: ["src/app/**/*", "src/webvowl/**/*"],
+				files: [`${paths.frontendPath}/**/*`, `${paths.backendPath}/**/*`],
 				tasks: ["webpack:build-dev", "post-js"],
 				options: {
 					livereload: true,
@@ -156,7 +152,7 @@ module.exports = function (grunt) {
 				}
 			},
 			html: {
-				files: ["src/**/*.html"],
+				files: [`${paths.srcPath}/**/*.html`],
 				tasks: ["htmlbuild:dev"],
 				options: {
 					livereload: true,
@@ -165,8 +161,6 @@ module.exports = function (grunt) {
 			}
 		}
 	});
-
-
 	grunt.registerTask("default", ["release"]);
 	grunt.registerTask("pre-js", ["clean:deploy", "clean:zip", "copy"]);
 	grunt.registerTask("post-js", ["replace"]);

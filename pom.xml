@@ -5,9 +5,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <modelVersion>4.0.0</modelVersion>
 
  <groupId>com.github.WebVOWL</groupId>
- <artifactId>WebVOWL</artifactId>
- <version>1.1.8</version>
- <name>WebVOWL</name>
+ <artifactId>WebVOWL.Legacy</artifactId>
+ <version>1.1.7</version>
+ <name>WebVOWL Legacy</name>
  <packaging>war</packaging>
 
  <properties>
@@ -16,93 +16,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
      <maven.compiler.source>1.8</maven.compiler.source>
  </properties>
 
-<profiles>
-    <profile>
-        <id>dev-server</id>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.github.eirslett</groupId>
-                    <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.15.1</version>
-                    <executions>
-                        <execution>
-                            <id>grunt webserver</id>
-                            <goals>
-                                <goal>grunt</goal>
-                            </goals>
-                            <phase>generate-resources</phase>
-                            <configuration>
-                                <arguments>webserver</arguments>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-    <profile>
-        <id>production</id>
-        <activation>
-            <activeByDefault>true</activeByDefault>
-        </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>com.github.eirslett</groupId>
-                    <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.15.1</version>
-                    <executions>
-                        <execution>
-                            <id>grunt release</id>
-                            <goals>
-                                <goal>grunt</goal>
-                            </goals>
-                            <phase>generate-resources</phase>
-                            <configuration>
-                                <arguments>release</arguments>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-</profiles>
-
-<repositories>
-    <!-- Needed to fetch and compile OWL2VOWL git repo -->
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <!-- Include OWL2VOWL git repo to support a wider range of ontology file formats
-        https://github.com/VisualDataWeb/OWL2VOWL
-     -->
-    <dependency>
-	    <groupId>com.github.VisualDataWeb</groupId>
-	    <artifactId>OWL2VOWL</artifactId>
-	    <version>master-SNAPSHOT</version>
-	</dependency>
-</dependencies>
-
 <build>
-    <finalName>${project.name}</finalName>
+    <finalName>${project.name}_${version}</finalName>
     <plugins>
-        <!-- Java Compiler -->
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version>
-            <configuration>
-                <source>8</source>
-                <target>8</target>
-            </configuration>
-        </plugin>
-
         <!-- Build frontend files and include in the final build
             https://mvnrepository.com/artifact/com.github.eirslett/frontend-maven-plugin
         -->
@@ -137,6 +53,17 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                         <arguments>install</arguments>
                     </configuration>
                 </execution>
+
+                <execution>
+                    <id>grunt release</id>
+                    <goals>
+                        <goal>grunt</goal>
+                    </goals>
+                    <phase>generate-resources</phase>
+                    <configuration>
+                        <arguments>release</arguments>
+                    </configuration>
+                </execution>
             </executions>
         </plugin>
 
@@ -153,12 +80,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                 <packagingExcludes>node_modules/**</packagingExcludes>
                 <webappDirectory>target/webapp</webappDirectory>
                 <webXml>src/main/WEB-INF/web.xml</webXml>
-                <!-- <webResources>
-                    <resource>
-                     this is relative to the pom.xml directory
-                    <directory>target/deploy</directory>
-                    </resource>
-                </webResources> -->
             </configuration>
         </plugin>
     </plugins>
