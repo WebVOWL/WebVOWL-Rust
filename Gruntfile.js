@@ -7,38 +7,10 @@ module.exports = function (grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
-		bump: {
-			options: {
-				files: ["package.json"],
-				updateConfigs: ["pkg"],
-				commit: true,
-				commitMessage: "Bump version to %VERSION%",
-				commitFiles: ["package.json"],
-				createTag: false,
-				prereleaseName: "RC",
-				push: false
-			}
-		},
 		clean: {
 			deploy: paths.deployPath,
-			// zip: paths.deployZipPath + "/webvowl-*.zip",
 			testOntology: paths.deployPath + "/data/benchmark.json",
 		},
-		// compress: {
-		// 	deploy: {
-		// 		options: {
-		// 			archive: function () {
-		// 				let branchInfo = grunt.config("gitinfo.local.branch.current");
-		// 				return "webvowl-" + branchInfo.name + "-" + branchInfo.shortSHA + ".zip";
-		// 			},
-		// 			level: 9,
-		// 			pretty: true
-		// 		},
-		// 		files: [
-		// 			{ expand: true, cwd: paths.deployPath, src: ["**"], dest: paths.deployZipPath }
-		// 		]
-		// 	}
-		// },
 		connect: {
 			devserver: {
 				options: {
@@ -118,12 +90,10 @@ module.exports = function (grunt) {
 		},
 		webpack: {
 			options: webpackConfig,
-			build: {
-				mode: 'production',
-			},
+			build: {},
 			"build-dev": {
 				mode: 'development',
-				devtool: 'inline-source-map'
+				devtool: 'source-map'
 			}
 		},
 		watch: {
@@ -151,14 +121,11 @@ module.exports = function (grunt) {
 			// }
 		}
 	});
-
 	grunt.registerTask("default", ["release"]);
-	// grunt.registerTask("pre-js", ["clean:deploy", "clean:zip", "copy"]);
 	grunt.registerTask("pre-js", ["clean:deploy", "copy"]);
 	grunt.registerTask("post-js", ["replace"]);
 	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "post-js", "htmlbuild:dev"]);
 	grunt.registerTask("release", ["pre-js", "webpack:build", "post-js", "htmlbuild:release", "clean:testOntology"]);
-	// grunt.registerTask("zip", ["gitinfo", "release", "compress"]);
 	grunt.registerTask("webserver", ["package", "connect:devserver", "watch"]);
 	grunt.registerTask("test", ["karma:dev"]);
 	grunt.registerTask("test-ci", ["karma:continuous"]);
