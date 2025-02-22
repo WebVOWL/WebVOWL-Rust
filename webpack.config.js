@@ -58,7 +58,13 @@ module.exports = {
 			d3: "d3"
 		}),
 		new CopyWebpackPlugin(
-			{ patterns: [{ context: `${paths.frontendPath}/data`, from: "./*", to: `data` }] }
+			{
+				patterns: [
+					{ context: paths.dataPath, from: "./*", to: `data` },
+					{ context: paths.webappPath, from: "favicon.ico", to: "." },
+					{ from: "license.txt", to: "." }
+				]
+			}
 		),
 		new MiniCssExtractPlugin({ filename: "css/[name].css" }),
 		new WasmPackPlugin({
@@ -69,7 +75,7 @@ module.exports = {
 
 			// Optional space delimited arguments to appear before the wasm-pack
 			// command. Default arguments are `--verbose`.
-			args: '--log-level warn',
+			args: '--log-level verbose',
 			// Default arguments are `--typescript --target browser --mode normal`. --no-typescript
 			extraArgs: '--typescript --target bundler --mode normal',
 
@@ -98,7 +104,7 @@ module.exports = {
 			//
 			// the mode `development` makes `wasm-pack` build in `debug` mode.
 			// the mode `production` makes `wasm-pack` build in `release` mode.
-			// forceMode: "development",
+			forceMode: "production",
 
 			// Controls plugin output verbosity, either 'info' or 'error'.
 			// Defaults to 'info'.
