@@ -1,6 +1,7 @@
 module.exports.path_func = new function () {
     // General stuff
     this.srcPath = "src/main";
+    this.dataPath = "src/data"
 
     // Deploy
     this.deployPath = "target/deploy";
