@@ -6,16 +6,22 @@ license = "MIT"
 
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [profile.release]
-# This makes the compiled code faster and smaller, but it makes compiling slower,
-# so it's only enabled in release mode.
-# https://doc.rust-lang.org/cargo/reference/profiles.html#lto
-lto = "thin"
+lto = true
+
+[package.metadata.wasm-pack.profile.release]
+# Execute very expensive optimization passes to further optimize the wasm binary
+wasm-opt = ['-O4']
 
 [features]
 default = ["console_error_panic_hook"]
+
+[dependencies.web-sys]
+version = "0.3"
+# For all features, see: https://docs.rs/web-sys/latest/web_sys/#modules
+features = ["Node", "Document", "Element", "HtmlElement", "Window"]
 
 [dependencies]
 # Web dev
@@ -36,4 +42,5 @@ serde_json = "1.0"
 glam = "0.29.0"
 glium = "0.33"
 rand = "0.8.5"
+getrandom = { version = "0.3", features = ["wasm_js"] }
 winit = { version = "0.28.7" }
