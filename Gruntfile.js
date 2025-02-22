@@ -30,14 +30,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		copy: {
-			static: {
-				files: [
-					{ expand: true, cwd: paths.webappPath, src: ["favicon.ico"], dest: paths.deployPath },
-					{ expand: true, src: ["license.txt"], dest: paths.deployPath }
-				]
-			}
-		},
 		htmlbuild: {
 			options: {
 				beautify: true,
@@ -56,13 +48,6 @@ module.exports = function (grunt) {
 				src: `${paths.webappPath}/index.html`,
 				dest: paths.deployPath
 			}
-		},
-		jshint: {
-			options: {
-				jshintrc: true
-			},
-			source: [`${paths.webappPath}/**/*.js`],
-			tests: [`${paths.testPath}/*/**/*.js`]
 		},
 		karma: {
 			options: {
@@ -92,8 +77,8 @@ module.exports = function (grunt) {
 			options: webpackConfig,
 			build: {},
 			"build-dev": {
-				mode: 'development',
-				devtool: 'source-map'
+				mode: "development",
+				devtool: "source-map"
 			}
 		},
 		watch: {
@@ -122,7 +107,7 @@ module.exports = function (grunt) {
 		}
 	});
 	grunt.registerTask("default", ["release"]);
-	grunt.registerTask("pre-js", ["clean:deploy", "copy"]);
+	grunt.registerTask("pre-js", ["clean:deploy"]);
 	grunt.registerTask("post-js", ["replace"]);
 	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "post-js", "htmlbuild:dev"]);
 	grunt.registerTask("release", ["pre-js", "webpack:build", "post-js", "htmlbuild:release", "clean:testOntology"]);
