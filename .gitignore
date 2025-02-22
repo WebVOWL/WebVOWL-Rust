@@ -5,6 +5,8 @@
 
 # Rust
 Cargo.lock
+bin
+lib
 
 # IntelliJ  files
 *.iml
