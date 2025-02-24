@@ -9,9 +9,9 @@ Make sure you are inside `WebVOWL` directory and you have docker installed. Run 
 
 `docker build . -t webvowl:v1`
 
-Run the following command to run WebVOWL at port 8080. 
+Run the following command to run WebVOWL at port 8080.
 
-`docker-compose up -d` 
+`docker-compose up -d`
 
 Visit [http://localhost:8080](http://localhost:8080) to use WebVOWL.
 
@@ -24,7 +24,20 @@ Node.js for installing the development tools and dependencies.
 Development setup
 -----------------
 
-### Simple ###
+### New Simple ###
+1. Install Maven from https://maven.apache.org/download.cgi
+2. Install Rust from https://www.rust-lang.org/tools/install
+3. Run `cargo install wasm-pack`
+
+### New Advanced ###
+1. Follow the [simple setup](#New-Simple)
+2. Install Node.js from http://nodejs.org/download/
+
+Now you can execute a few more advanced commands in the terminal:
+- `npm run test` starts the test runner
+- `npm run server` starts a local webserver with the current development version
+
+### Old Simple ###
 1. Download and install Node.js from http://nodejs.org/download/
 2. Open the terminal in the root directory
 3. Run `npm install` to install the dependencies and build the project
@@ -34,7 +47,7 @@ Development setup
 
 Visit [http://localhost:3000](http://localhost:3000) to use WebVOWL.
 
-### Advanced ###
+### Old Advanced ###
 Instead of the last step of the simple setup, install the npm package `grunt-cli` globally with
 `npm install grunt-cli -g`. Now you can execute a few more advanced commands in the terminal:
 
