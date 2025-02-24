@@ -28,6 +28,8 @@ module.exports = {
 		},
 	},
 	experiments: {
+		futureDefaults: true,
+		css: false,
 		asyncWebAssembly: true
 	},
 	optimization: {
@@ -75,9 +77,9 @@ module.exports = {
 
 			// Optional space delimited arguments to appear before the wasm-pack
 			// command. Default arguments are `--verbose`.
-			args: '--log-level verbose',
+			args: '--verbose',
 			// Default arguments are `--typescript --target browser --mode normal`. --no-typescript
-			extraArgs: '--typescript --target bundler --mode normal',
+			extraArgs: '--target bundler --mode normal -- --target wasm32-wasip2',
 
 			// Optional array of absolute paths to directories, changes to which
 			// will trigger the build.
