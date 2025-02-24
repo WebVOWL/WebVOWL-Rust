@@ -70,8 +70,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     </profile>
 </profiles>
 
-<repositories>
-    <!-- Needed to fetch and compile OWL2VOWL git repo -->
+<!-- Commented out as it currently causes the build to fail
+    Reason: https://github.com/jitpack/jitpack.io/issues/3779#issuecomment-1160801082
+ -->
+<!-- <repositories>
+     Needed to fetch and compile OWL2VOWL git repo
     <repository>
         <id>jitpack.io</id>
         <url>https://jitpack.io</url>
@@ -79,15 +82,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 </repositories>
 
 <dependencies>
-    <!-- Include OWL2VOWL git repo to support a wider range of ontology file formats
+     Include OWL2VOWL git repo to support a wider range of ontology file formats
         https://github.com/VisualDataWeb/OWL2VOWL
-     -->
+
     <dependency>
 	    <groupId>com.github.VisualDataWeb</groupId>
 	    <artifactId>OWL2VOWL</artifactId>
 	    <version>master-SNAPSHOT</version>
 	</dependency>
-</dependencies>
+</dependencies> -->
 
 <build>
     <finalName>${project.name}_${project.version}</finalName>
