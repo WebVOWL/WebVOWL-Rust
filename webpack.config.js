@@ -13,7 +13,8 @@ module.exports = {
 	mode: "production",
 	entry: {
 		back: `./${paths.backendPath}/js/entry.js`,
-		front: `./${paths.frontendPath}/js/entry.js`
+		front: `./${paths.frontendPath}/js/entry.js`,
+		wasm: `./${paths.pkgPath}/index.js`
 	},
 	output: {
 		path: path.resolve(__dirname, paths.deployPath),
@@ -28,8 +29,8 @@ module.exports = {
 		},
 	},
 	experiments: {
-		futureDefaults: true,
-		css: false,
+		// futureDefaults: true,
+		// css: false,
 		asyncWebAssembly: true
 	},
 	optimization: {
@@ -38,7 +39,7 @@ module.exports = {
 			new TerserPlugin({
 				minify: TerserPlugin.uglifyJsMinify,
 				// `terserOptions` options will be passed to `uglify-js`
-				// Link to options - https://github.com/mishoo/UglifyJS#minify-options
+				// https://github.com/mishoo/UglifyJS#minify-options
 				terserOptions: { sourceMap: true },
 			}),
 			new CssMinimizerPlugin()
@@ -64,52 +65,17 @@ module.exports = {
 				patterns: [
 					{ context: paths.dataPath, from: "./*", to: `data` },
 					{ context: paths.webappPath, from: "favicon.ico", to: "." },
-					{ from: "license.txt", to: "." }
+					{ from: "LICENSE", to: "." }
 				]
 			}
 		),
 		new MiniCssExtractPlugin({ filename: "css/[name].css" }),
 		new WasmPackPlugin({
 			crateDirectory: path.resolve(__dirname, paths.rustPath),
-
-			// Check https://rustwasm.github.io/wasm-pack/book/commands/build.html for
-			// the available set of arguments.
-
-			// Optional space delimited arguments to appear before the wasm-pack
-			// command. Default arguments are `--verbose`.
+			// Check https://rustwasm.github.io/wasm-pack/book/commands/build.html for available set of arguments.
 			args: '--verbose',
-			// Default arguments are `--typescript --target browser --mode normal`. --no-typescript
-			extraArgs: '--target bundler --mode normal -- --target wasm32-wasip2',
-
-			// Optional array of absolute paths to directories, changes to which
-			// will trigger the build.
-			// watchDirectories: [
-			// 	path.resolve(__dirname, paths.rustPath)
-			// ],
-
-			// The same as the `--out-dir` option for `wasm-pack`
-			outDir: paths.pgkPath,
-
-			// The same as the `--out-name` option for `wasm-pack`
-			// outName: "index",
-
-			// If defined, `forceWatch` will force activate/deactivate watch mode for
-			// `.rs` files.
-			//
-			// The default (not set) aligns watch mode for `.rs` files to Webpack's
-			// watch mode.
-			// forceWatch: true,
-
-			// If defined, `forceMode` will force the compilation mode for `wasm-pack`
-			//
-			// Possible values are `development` and `production`.
-			//
-			// the mode `development` makes `wasm-pack` build in `debug` mode.
-			// the mode `production` makes `wasm-pack` build in `release` mode.
+			extraArgs: '--no-typescript --target bundler --mode normal',
 			forceMode: "production",
-
-			// Controls plugin output verbosity, either 'info' or 'error'.
-			// Defaults to 'info'.
 			pluginLogLevel: 'info'
 		}),
 	]
