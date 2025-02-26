@@ -9,7 +9,7 @@ module.exports.path_func = new function () {
 
     // Rust
     this.rustPath = `${this.srcPath}/rust`;
-    this.pgkPath = `${this.deployPath}/pgk`
+    this.pkgPath = `${this.rustPath}/pkg`
 
     // JS/CSS/HTML
     this.webappPath = `${this.srcPath}/webapp`;
