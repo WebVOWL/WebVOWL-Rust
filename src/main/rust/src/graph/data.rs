@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 // & Main pub struct (Head of the JSON)
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct OwlToWovlJSON {
     pub _comment: String,
@@ -14,6 +15,7 @@ pub struct OwlToWovlJSON {
 }
 
 // & Level 1
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Header {
     pub languages: Vec<String>,
@@ -26,6 +28,7 @@ pub struct Header {
     pub labels: Option<Label>,
     pub other: Option<Other>,
 }
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Metrics {
     pub classCount: u32,
@@ -33,6 +36,7 @@ pub struct Metrics {
     pub datatypePropertyCount: u32,
     pub individualCount: u32,
 }
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Class {
     pub id: String,
@@ -43,6 +47,7 @@ pub struct Class {
     pub disjointUnion: Option<Vec<String>>,
     pub complement: Option<Vec<String>>,
 }
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ClassAttribute {
     pub id: String,
@@ -67,6 +72,7 @@ pub struct Property {
     pub id: String,
     pub r#type: String,
 }
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PropertyAttribute {
     pub iri: Option<String>,
@@ -84,6 +90,7 @@ pub struct PropertyAttribute {
 }
 
 // & Level 2
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Label {
     // ^ pub struct for both labels, comments, title and description
@@ -96,6 +103,7 @@ pub struct Label {
     pub fr: Option<String>,
     pub es: Option<String>,
 }
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Other {
     pub licence: Option<Vec<ILVT>>,
@@ -113,11 +121,13 @@ pub struct Other {
     pub rights: Option<Vec<ILVT>>,
     pub backwardCompatibleWith: Option<Vec<ILVT>>,
 }
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Annotations {
     pub isDefinedBy: Option<Vec<ILVT>>,
     pub versionInfo: Option<Vec<ILVT>>,
 }
+#[allow(non_snake_case)]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Individuals {
     pub iri: String,
