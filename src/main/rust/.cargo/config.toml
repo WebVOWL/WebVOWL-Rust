@@ -1,21 +1,8 @@
 [build]
-# https://doc.rust-lang.org/rustc/platform-support/wasm32-wasip2.html
-# target = "wasm32-wasip2"
-# target = "wasm32-unknown-unknown"
+target = "wasm32-unknown-unknown"
 
-# [env]
-# # WASI_SDK_PATH=""
-# CC_wasm32_wasip2 = "~/wasi-sdk/bin/clang"
+[target.wasm32-unknown-unknown]
+rustflags = ["-C", "target-feature=+atomics,+bulk-memory,+mutable-globals"]
 
-
-[target.wasm32-wasip2]
-# https://doc.rust-lang.org/cargo/reference/config.html#target
-# linker = "~/wasi-sdk" # linker to use
-rustflags = [
-    "-C",
-    "linker=~/wasi-sdk/bin/clang",
-    # "--sysroot",
-    # "~/wasi-sdk/share/wasi-sysroot",
-]
-# https://doc.rust-lang.org/rustc/codegen-options/index.html#linker
-# linker-flavor = "wasm-ld" # Linker flavor to use
+[unstable]
+build-std = ["std,panic_abort"]
