@@ -10,6 +10,7 @@ module.exports = function (grunt) {
 		clean: {
 			deploy: paths.deployPath,
 			testOntology: paths.deployPath + "/data/benchmark.json",
+			redundantFolders: "pkg"
 		},
 		connect: {
 			devserver: {
@@ -109,8 +110,8 @@ module.exports = function (grunt) {
 	grunt.registerTask("default", ["release"]);
 	grunt.registerTask("pre-js", ["clean:deploy"]);
 	grunt.registerTask("post-js", ["replace"]);
-	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "post-js", "htmlbuild:dev"]);
-	grunt.registerTask("release", ["pre-js", "webpack:build", "post-js", "htmlbuild:release", "clean:testOntology"]);
+	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "clean:redundantFolders", "post-js", "htmlbuild:dev"]);
+	grunt.registerTask("release", ["pre-js", "webpack:build", "clean:redundantFolders", "post-js", "htmlbuild:release", "clean:testOntology"]);
 	grunt.registerTask("webserver", ["package", "connect:devserver", "watch"]);
 	grunt.registerTask("test", ["karma:dev"]);
 	grunt.registerTask("test-ci", ["karma:continuous"]);
