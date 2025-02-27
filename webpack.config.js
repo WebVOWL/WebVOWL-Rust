@@ -14,6 +14,7 @@ module.exports = {
 	entry: {
 		back: `./${paths.backendPath}/js/entry.js`,
 		front: `./${paths.frontendPath}/js/entry.js`,
+		test: `./${paths.webappPath}/test/test.js`,
 		wasm: `./${paths.pkgPath}/index.js`
 	},
 	output: {
@@ -54,6 +55,14 @@ module.exports = {
 					"css-loader",
 				],
 			},
+			{
+				// Fixes: BREAKING CHANGE: The request '../../..' failed to resolve only because it was resolved as fully specified
+				// See: https://stackoverflow.com/q/70964723
+				test: /\.m?js/,
+				resolve: {
+					fullySpecified: false,
+				},
+			}
 		],
 	},
 	plugins: [
@@ -74,8 +83,9 @@ module.exports = {
 			crateDirectory: path.resolve(__dirname, paths.rustPath),
 			// Check https://rustwasm.github.io/wasm-pack/book/commands/build.html for available set of arguments.
 			args: '--verbose',
-			extraArgs: '--no-typescript --target bundler --mode normal',
+			extraArgs: '--no-typescript --target web --mode normal',
 			forceMode: "production",
+			outDir: "pkg",
 			pluginLogLevel: 'info'
 		}),
 	]
