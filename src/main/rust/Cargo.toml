@@ -10,7 +10,7 @@ description = "WebVOWL backend"
 keywords = ["graph", "vowl", "ontology", "force-directed-graph"]
 
 [lib]
-crate-type = ["cdylib"] #, "rlib"]
+crate-type = ["cdylib", "rlib"]
 
 [profile.release]
 lto = true
@@ -28,7 +28,6 @@ grapher = { version = ">=0.2.3", git = "https://github.com/WebVOWL/RustGrapher.g
 petgraph = "0.6.5"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-# rand = "0.8.5"
 glam = "0.29.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
@@ -57,5 +56,4 @@ web-sys = { version = "0.3", features = [
 
 # wasm-bindgen-futures = "0.4"
 # wasm-cookies = "0.2"
-# wasm_thread = { version = "0.2", features = ["es_modules"] }
 # wgpu = { version = "0.17", features = ["webgl"] }
