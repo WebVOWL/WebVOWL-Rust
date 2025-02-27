@@ -1,17 +1,10 @@
-# WebVOWL [![Build Status](https://travis-ci.org/VisualDataWeb/WebVOWL.svg?branch=master)](https://travis-ci.org/VisualDataWeb/WebVOWL)
+# WebVOWL
+This is a fork of WebVOWL which focuses on addressing the slow performance of the original WebVOWL in an effort to make WebVOWL great again.
 
-
-This repository was ported from an internal SVN repository to Github after the release of WebVOWL 0.4.0. Due to cleanups with `git filter-branch`, the commit history might show some strange effects.
-
-## Run Using Docker
-Make sure you are inside `WebVOWL` directory and you have docker installed. Run the following command to build the docker image:
-
-`docker build . -t webvowl:v1`
-
-Run the following command to run WebVOWL at port 8080.
-
-`docker-compose up -d`
-
+## Run using Docker
+Make sure you are inside the `WebVOWL` directory and you have docker installed.  
+Run `docker build . -t webvowl:v1` to build the docker image.  
+Run `docker-compose up -d` to start the WebVOWL server at port 8080.  
 Visit [http://localhost:8080](http://localhost:8080) to use WebVOWL.
 
 ## Development setup
@@ -21,6 +14,11 @@ Visit [http://localhost:8080](http://localhost:8080) to use WebVOWL.
 2. Install Rust from https://www.rust-lang.org/tools/install
 3. Run `cargo install wasm-pack`
 
+Next, make sure you are inside the `WebVOWL` directory.
+Now you can:
+- Run `mvn package` to build the project
+- Run `mvn package -P dev-server` to start a local webserver with the current development version
+
 ### Advanced
 1. Follow the [simple setup](#Simple)
 2. Install Node.js from http://nodejs.org/download/
@@ -28,22 +26,8 @@ Visit [http://localhost:8080](http://localhost:8080) to use WebVOWL.
 
 Now you can execute a few more advanced commands in the terminal:
 - `npm run test` starts the test runner
-- `npm run server` starts a local webserver with the current development version
-
-## Trouble shooting
-
-### Rust-wasm
-Issue:
-> Module not found: Error: Can't resolve 'env' in '/src/main/rust/pkg'
-
-Solution:
-> https://github.com/rustwasm/wasm-bindgen/discussions/3500#discussioncomment-6334669
-
 
 ## Additional information
-To export the VOWL visualization to an SVG image, all css styles have to be included into the SVG code.
-This means that if you change the CSS code in the `vowl.css` file, you also have to update the code that
-inlines the styles - otherwise the exported SVG will not look the same as the displayed graph.
+To export the VOWL visualization to an SVG image, all css styles have to be included into the SVG code. This means that if you change the CSS code in the `vowl.css` file, you also have to update the code that inlines the styles - otherwise the exported SVG will not look the same as the displayed graph.
 
-The tool which creates the code that inlines the styles can be found in the util directory. Please
-follow the instructions in its [README](util/VowlCssToD3RuleConverter/README.md) file.
+The tool which creates the code that inlines the styles can be found in the util directory. Please follow the instructions in its [README](util/VowlCssToD3RuleConverter/README.md) file.
