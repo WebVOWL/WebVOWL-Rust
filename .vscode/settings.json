@@ -1,5 +1,4 @@
 {
-    "files.exclude": {},
     "[rust]": {
         "editor.defaultFormatter": "rust-lang.rust-analyzer",
         "editor.formatOnSave": true,
@@ -10,5 +9,8 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "rust-analyzer.linkedProjects": [
         "src/main/rust/Cargo.toml"
-    ]
+    ],
+    "[markdown]": {
+        "files.trimTrailingWhitespace": false
+    }
 }
