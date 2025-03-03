@@ -1,4 +1,11 @@
-import init, { initThreadPool, run } from './index.js';
+// import { path_func } from '../../../../config.js';
+// import init, { initThreadPool, run } from `../${paths.pkgPath}/index.js`;
+
+// const paths = path_func
+
+// CHECKOUT: https://webpack.js.org/guides/code-splitting/
+
+import init, { initThreadPool, run } from "../../rust/pkg/index.js";
 
 // Regular wasm-bindgen initialization.
 await init();
