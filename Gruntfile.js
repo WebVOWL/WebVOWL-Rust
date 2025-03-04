@@ -9,6 +9,7 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		clean: {
 			deploy: paths.deployPath,
+			webappDeploy: paths.webappDeployPath,
 			testOntology: paths.deployPath + "/data/benchmark.json",
 			redundantFolders: "pkg"
 		},
@@ -20,7 +21,7 @@ module.exports = function (grunt) {
 					port: 8000,
 					base: paths.deployPath,
 					directory: paths.deployPath,
-					livereload: true,
+					livereload: false,
 					open: "http://localhost:8000/",
 					middleware: function (connect, options, middlewares) {
 						return middlewares.concat([
@@ -48,15 +49,6 @@ module.exports = function (grunt) {
 				// required for removing the benchmark ontology from the selection menu
 				src: `${paths.webappPath}/index.html`,
 				dest: paths.deployPath
-			}
-		},
-		karma: {
-			options: {
-				configFile: `${paths.testPath}/karma.conf.js`
-			},
-			dev: {},
-			continuous: {
-				singleRun: true
 			}
 		},
 		replace: {
@@ -109,10 +101,8 @@ module.exports = function (grunt) {
 	});
 	grunt.registerTask("default", ["release"]);
 	grunt.registerTask("pre-js", ["clean:deploy"]);
-	grunt.registerTask("post-js", ["replace"]);
-	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "clean:redundantFolders", "post-js", "htmlbuild:dev"]);
-	grunt.registerTask("release", ["pre-js", "webpack:build", "clean:redundantFolders", "post-js", "htmlbuild:release", "clean:testOntology"]);
+	grunt.registerTask("post-js", ["replace", "clean:redundantFolders"]);
+	grunt.registerTask("package", ["pre-js", "webpack:build-dev", "post-js", "htmlbuild:dev"]);
+	grunt.registerTask("release", ["pre-js", "webpack:build", "post-js", "htmlbuild:release", "clean:testOntology"]);
 	grunt.registerTask("webserver", ["package", "connect:devserver", "watch"]);
-	grunt.registerTask("test", ["karma:dev"]);
-	grunt.registerTask("test-ci", ["karma:continuous"]);
 };
