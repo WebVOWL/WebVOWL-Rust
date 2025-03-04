@@ -8,8 +8,6 @@ Run `docker-compose up -d` to start the WebVOWL server at port 8080.
 Visit [http://localhost:8080](http://localhost:8080) to use WebVOWL.
 
 ## Development setup
-
-### Simple
 1. Install Maven from https://maven.apache.org/download.cgi
 2. Install Rust from https://www.rust-lang.org/tools/install
 3. Run `cargo install wasm-pack`
@@ -18,14 +16,6 @@ Next, make sure you are inside the `WebVOWL` directory.
 Now you can:
 - Run `mvn package` to build the project
 - Run `mvn package -P dev-server` to start a local webserver with the current development version
-
-### Advanced
-1. Follow the [simple setup](#Simple)
-2. Install Node.js from http://nodejs.org/download/
-3. Install the npm package `grunt-cli` globally with `npm install grunt-cli -g`
-
-Now you can execute a few more advanced commands in the terminal:
-- `npm run test` starts the test runner
 
 ## Additional information
 To export the VOWL visualization to an SVG image, all css styles have to be included into the SVG code. This means that if you change the CSS code in the `vowl.css` file, you also have to update the code that inlines the styles - otherwise the exported SVG will not look the same as the displayed graph.
