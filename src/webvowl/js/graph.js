@@ -561,13 +561,13 @@ module.exports = function ( graphContainerSelector ){
         
         // force centered positions on single-layered links
         var link = label.link();
-        if ( link.layers().length === 1 && !link.loops() ) {
-          var linkDomainIntersection = math.calculateIntersection(link.range(), link.domain(), 0);
-          var linkRangeIntersection = math.calculateIntersection(link.domain(), link.range(), 0);
-          position = math.calculateCenter(linkDomainIntersection, linkRangeIntersection);
-          label.x = position.x;
-          label.y = position.y;
-        }
+        // if ( link.layers().length === 1 && !link.loops() ) {
+        //   var linkDomainIntersection = math.calculateIntersection(link.range(), link.domain(), 0);
+        //   var linkRangeIntersection = math.calculateIntersection(link.domain(), link.range(), 0);
+        //   position = math.calculateCenter(linkDomainIntersection, linkRangeIntersection);
+        //   label.x = position.x;
+        //   label.y = position.y;
+        // }
         return "translate(" + label.x + "," + label.y + ")";
       });
       // Set link paths and calculate additional information
@@ -1642,6 +1642,8 @@ module.exports = function ( graphContainerSelector ){
     // update more meta OBJECT
     // Initialize filters with data to replicate consecutive filtering
     var initializationData = _.clone(unfilteredData);
+    links = linkCreator.createLinks(initializationData.properties);
+    storeLinksOnNodes(initializationData.nodes, links);
     options.filterModules().forEach(function ( module ){
       initializationData = filterFunction(module, initializationData, true);
     });
@@ -1689,6 +1691,8 @@ module.exports = function ( graphContainerSelector ){
     var preprocessedData = _.clone(unfilteredData);
     
     // Filter the data
+    links = linkCreator.createLinks(preprocessedData.properties);
+    storeLinksOnNodes(preprocessedData.nodes, links);
     options.filterModules().forEach(function ( module ){
       preprocessedData = filterFunction(module, preprocessedData);
     });
@@ -1708,9 +1712,6 @@ module.exports = function ( graphContainerSelector ){
   }
   
   function filterFunction( module, data, initializing ){
-    links = linkCreator.createLinks(data.properties);
-    storeLinksOnNodes(data.nodes, links);
-    
     if ( initializing ) {
       if ( module.initialize ) {
         module.initialize(data.nodes, data.properties);

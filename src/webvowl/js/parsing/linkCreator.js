@@ -70,21 +70,21 @@ module.exports = (function (){
       layers = [];
       
       // Search for other links that are another layer
-      for ( i = 0, l = allLinks.length; i < l; i++ ) {
-        var otherLink = allLinks[i];
-        if ( link.domain() === otherLink.domain() && link.range() === otherLink.range() ||
-          link.domain() === otherLink.range() && link.range() === otherLink.domain() ) {
-          layers.push(otherLink);
-        }
-      }
-      
+      // for ( i = 0, l = allLinks.length; i < l; i++ ) {
+      //   var otherLink = allLinks[i];
+      //   if ( link.domain() === otherLink.domain() && link.range() === otherLink.range() ||
+      //     link.domain() === otherLink.range() && link.range() === otherLink.domain() ) {
+      //     layers.push(otherLink);
+      //   }
+      // }
+      link.layers(layers)
       // Set the results on each of the layers
-      for ( i = 0, l = layers.length; i < l; ++i ) {
-        layer = layers[i];
+      // for ( i = 0, l = layers.length; i < l; ++i ) {
+      //   layer = layers[i];
         
-        layer.layerIndex(i);
-        layer.layers(layers);
-      }
+      //   layer.layerIndex(i);
+      //   layer.layers(layers);
+      // }
     }
   }
   
@@ -95,22 +95,26 @@ module.exports = (function (){
     
     if ( typeof link.loops() === "undefined" ) {
       loops = [];
+      if (link.domain() === link.range()) {
+        loops.push(link)
+        link.loops(loops)
+      }
       
       // Search for other links that are also loops of the same node
-      for ( i = 0, l = allLinks.length; i < l; i++ ) {
-        var otherLink = allLinks[i];
-        if ( link.domain() === otherLink.domain() && link.domain() === otherLink.range() ) {
-          loops.push(otherLink);
-        }
-      }
+      // for ( i = 0, l = allLinks.length; i < l; i++ ) {
+      //   var otherLink = allLinks[i];
+      //   if ( link.domain() === otherLink.domain() && link.domain() === otherLink.range() ) {
+      //     loops.push(otherLink);
+      //   }
+      // }
       
-      // Set the results on each of the loops
-      for ( i = 0, l = loops.length; i < l; ++i ) {
-        loop = loops[i];
+      // // Set the results on each of the loops
+      // for ( i = 0, l = loops.length; i < l; ++i ) {
+      //   loop = loops[i];
         
-        loop.loopIndex(i);
-        loop.loops(loops);
-      }
+      //   loop.loopIndex(i);
+      //   loop.loops(loops);
+      // }
     }
   }
   
