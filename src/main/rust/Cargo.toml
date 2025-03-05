@@ -10,6 +10,7 @@ description = "WebVOWL backend"
 keywords = ["graph", "vowl", "ontology", "force-directed-graph"]
 
 [lib]
+name = "vowlgrapher_lib"
 crate-type = ["cdylib", "rlib"]
 
 [profile.release]
@@ -19,9 +20,6 @@ lto = true
 # Execute very expensive optimization passes to further optimize the wasm binary
 wasm-opt = ['-O4']
 
-[features]
-feature = ["console_error_panic_hook"]
-
 [dependencies]
 rayon = "1.8"
 grapher = { version = ">=0.2.3", git = "https://github.com/WebVOWL/RustGrapher.git" }
@@ -30,12 +28,12 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 glam = "0.29.0"
 
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+# [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 
-# winit = { version = "0.28.7" }
+# # winit = { version = "0.28.7" }
 
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-console_error_panic_hook = { version = "0.1.7", optional = true }
+# [target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = { version = "0.1.7" }   #, optional = true }
 getrandom = { version = "0.2", features = ["js"] }
 wasm-bindgen = "0.2"
 wasm-bindgen-rayon = "1.2"
@@ -48,6 +46,8 @@ web-sys = { version = "0.3", features = [
     "Element",
     "HtmlElement",
     "Window",
+    "console",
+    "File",
 ] }
 
 # console_log = "1.0"
