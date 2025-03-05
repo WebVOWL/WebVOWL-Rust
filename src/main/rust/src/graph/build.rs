@@ -6,6 +6,8 @@ use std::io::BufReader;
 //Petgraph
 use petgraph::Graph;
 use petgraph::graph::NodeIndex;
+use wasm_bindgen::JsValue;
+use wasm_bindgen_file_reader::WebSysFile;
 
 use super::data::OwlToWovlJSON;
 
@@ -29,9 +31,22 @@ impl GraphContainer {
     }
 }
 
-pub fn build_graph() -> GraphContainer {
+pub fn build_graph(web_file: web_sys::File) -> GraphContainer {
     // * Read the JSON file */
-    let file = File::open("./src/ontovibe.json").unwrap();
+    // https://www.reddit.com/r/rust/comments/pdxa09/accessing_file_data_from_wasm/
+    // https://rustwasm.github.io/wasm-bindgen/examples/fetch.html
+    // https://github.com/Badel2/wasm-bindgen-file-reader
+    // https://github.com/rustwasm/wasm-bindgen/issues/1727
+    //
+
+    let file = WebSysFile::new(file);
+
+    // let file_result = File::open("./data/muto.json");
+    // let file = match file_result {
+    //     Ok(file) => file,
+    //     Err(error) => panic!("Problem opening the file: {error:?}"),
+    // };
+
     let reader = BufReader::new(file);
     let graph_struct: OwlToWovlJSON = serde_json::from_reader(reader).unwrap();
 
