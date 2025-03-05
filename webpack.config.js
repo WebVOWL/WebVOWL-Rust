@@ -2,14 +2,12 @@
 const paths = require("./config.js").path_func;
 const path = require('path');
 const webpack = require("webpack");
-const merge = require('webpack-merge');
-const express = require("express");
+const MergeWebPackPlugin = require('webpack-merge');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin')
-
+const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 
 function getConfig(args) {
 	const isProdEnabled = args.mode === "production" ? true : false;
@@ -17,6 +15,7 @@ function getConfig(args) {
 	return {
 		cache: true,
 		mode: modeLiteral,
+		devtool: args.mode === "production" ? false : "source-map",
 		entry: {
 			// back: `./${paths.backendPath}/js/entry.js`,
 			// front: `./${paths.frontendPath}/js/entry.js`,
@@ -37,7 +36,7 @@ function getConfig(args) {
 			enabledWasmLoadingTypes: ['fetch'],
 			workerChunkLoading: "universal",
 			globalObject: 'this',
-			module: true
+			module: true,
 			// library: {
 			// 	name: 'webvowl',
 			// 	type: 'umd',
@@ -114,20 +113,22 @@ function getConfig(args) {
 };
 
 function getServerConfig(args) {
-	// Checkout
-	// https://webpack.js.org/concepts/hot-module-replacement/
-	// https://webpack.js.org/configuration/dev-server/#devserverapp
 	return {
 		devServer: {
-			app: () => express(),
-			allowedHosts: 'auto',
-			compress: true,
-			host: "local-ip",
+			host: "localhost",
+			port: 8080,
+			server: "http",
+			compress: false,
+			hot: false,
+			open: true,
+			setupExitSignals: true,
 			headers: {
-				"cache-control": "no-store, no-cache, must-revalidate, max-age=0",
 				"Cross-Origin-Resource-Policy": "cross-origin",
 				"Cross-Origin-Opener-Policy": "same-origin",
 				"Cross-Origin-Embedder-Policy": "require-corp"
+			},
+			static: {
+				directory: path.resolve(paths.deployPath)
 			},
 			client: {
 				overlay: {
@@ -139,27 +140,19 @@ function getServerConfig(args) {
 				progress: true,
 				reconnect: 3,
 			},
-			// Checkout https://github.com/webpack/webpack-dev-middleware
 			devMiddleware: {
 				index: true,
-				mimeTypes: { phtml: 'text/html' },
-				publicPath: '/publicPathForDevServe',
-				serverSideRender: true,
-				writeToDisk: true,
+				serverSideRender: false,
+				writeToDisk: false,
+				lastModified: true,
 			},
 		},
-	}
-}
-
-
-
-// webpack config example  https://github.com/webpack-contrib/grunt-webpack/issues/153
-// Merging webpacks https://github.com/survivejs/webpack-merge
-// Grunt webpack https://github.com/webpack-contrib/grunt-webpack
+	};
+};
 module.exports = (args) => {
 	switch (args.type) {
 		case "devserver":
-			return merge(getConfig(args), getServerConfig(args));
+			return MergeWebPackPlugin.merge(getConfig(args), getServerConfig(args));
 		default:
 			return getConfig(args);
 	}
