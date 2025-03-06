@@ -1,11 +1,20 @@
 mod graph;
 
-use graph::{build::build_graph, print::print_graph};
+use std::{fs::File, io::BufReader};
+
+use graph::{build::build_graph, data::OwlToWovlJSON, print::print_graph};
 
 use grapher::simulator::SimulatorBuilder;
 
 fn main() {
-    let graph_container = build_graph();
+    let file_result = File::open("../data/muto.json");
+    let file = match file_result {
+        Ok(file) => file,
+        Err(error) => panic!("Problem opening the file: {error:?}"),
+    };
+    let reader = BufReader::new(file);
+    let graph_struct: OwlToWovlJSON = serde_json::from_reader(reader).unwrap();
+    let graph_container = build_graph(graph_struct);
     let graph_struct = graph_container.graph_struct;
     let graph = graph_container.graph;
 
