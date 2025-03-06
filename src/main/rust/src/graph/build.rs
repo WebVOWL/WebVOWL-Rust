@@ -1,15 +1,7 @@
-//Std stuff
-use std::collections::HashMap;
-use std::fs::File;
-use std::io::BufReader;
-
-//Petgraph
+use super::data::OwlToWovlJSON;
 use petgraph::Graph;
 use petgraph::graph::NodeIndex;
-use wasm_bindgen::JsValue;
-use wasm_bindgen_file_reader::WebSysFile;
-
-use super::data::OwlToWovlJSON;
+use std::collections::HashMap;
 
 pub struct GraphContainer {
     pub graph: Graph<String, ()>,
@@ -31,25 +23,7 @@ impl GraphContainer {
     }
 }
 
-pub fn build_graph(web_file: web_sys::File) -> GraphContainer {
-    // * Read the JSON file */
-    // https://www.reddit.com/r/rust/comments/pdxa09/accessing_file_data_from_wasm/
-    // https://rustwasm.github.io/wasm-bindgen/examples/fetch.html
-    // https://github.com/Badel2/wasm-bindgen-file-reader
-    // https://github.com/rustwasm/wasm-bindgen/issues/1727
-    //
-
-    let file = WebSysFile::new(file);
-
-    // let file_result = File::open("./data/muto.json");
-    // let file = match file_result {
-    //     Ok(file) => file,
-    //     Err(error) => panic!("Problem opening the file: {error:?}"),
-    // };
-
-    let reader = BufReader::new(file);
-    let graph_struct: OwlToWovlJSON = serde_json::from_reader(reader).unwrap();
-
+pub fn build_graph(graph_struct: OwlToWovlJSON) -> GraphContainer {
     // * Create the graph */
     let mut graph = Graph::<String, ()>::new();
 
