@@ -1,3 +1,10 @@
+use std::io::{BufReader, Bytes};
+use wasm_bindgen::{JsCast, JsValue};
+use wasm_bindgen_file_reader::WebSysFile;
+use wasm_bindgen_futures::JsFuture;
+
+use crate::graph::data::OwlToWovlJSON;
+
 pub fn set_panic_hook() {
     // When the `console_error_panic_hook` feature is enabled, we can call the
     // `set_panic_hook` function at least once during initialization, and then
@@ -6,9 +13,24 @@ pub fn set_panic_hook() {
     // For more details see
     // https://github.com/rustwasm/console_error_panic_hook#readme
     console_error_panic_hook::set_once();
+}
 
-    // Many browsers only capture the top 10 frames of a stack trace.
-    // In rust programs this is less likely to be enough.
-    // To see more frames, you can set the non-standard value Error.stackTraceLimit.
-    // For more information see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/stackTraceLimit
+pub fn read_web_file(web_file: web_sys::File) -> OwlToWovlJSON {
+    // * Read the JSON file */
+    // https://www.reddit.com/r/rust/comments/pdxa09/accessing_file_data_from_wasm/
+    // https://rustwasm.github.io/wasm-bindgen/examples/fetch.html
+    // https://github.com/Badel2/wasm-bindgen-file-reader
+    // https://github.com/rustwasm/wasm-bindgen/issues/1727
+    //
+
+    let file = WebSysFile::new(web_file);
+    let reader = BufReader::new(file);
+    return serde_json::from_reader(reader).unwrap();
+
+    //     let bytes: Bytes = match JsFuture::from(web_file.array_buffer()).await {
+    //         Ok(value) => {
+    //             JsFuture::from(JsCast::dyn_into(value).expect("reference should be valid"));
+    //         }
+    //         Err(_) => {}
+    //     };
 }
