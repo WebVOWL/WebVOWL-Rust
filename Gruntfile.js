@@ -60,10 +60,10 @@ module.exports = function (grunt) {
 	grunt.registerTask("default", ["prod"]);
 	grunt.registerTask("pre-js", ["clean:deploy"]);
 	grunt.registerTask("post-js", ["replace", "clean:redundantFolders"]);
-	grunt.registerTask("devel", ["pre-js", "webpack:dev", "post-js", "htmlbuild:dev"]);
-	grunt.registerTask("prod", ["pre-js", "webpack:prod", "post-js", "htmlbuild:prod", "clean:testOntology"]);
-	grunt.registerTask("webserver", ["devel", "server", "watch"]);
-	grunt.registerTask('server', 'Start a custom static web server.', function () {
+	grunt.registerTask("development", ["pre-js", "webpack:dev", "post-js", "htmlbuild:dev"]);
+	grunt.registerTask("production", ["pre-js", "webpack:prod", "post-js", "htmlbuild:prod", "clean:testOntology"]);
+	grunt.registerTask("devserver", ["development", "server", "watch"]);
+	grunt.registerTask('server', function () {
 		const Webpack = require('webpack');
 		const WebpackDevServer = require('webpack-dev-server');
 		const compiler = Webpack(devConfig);

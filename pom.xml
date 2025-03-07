@@ -27,13 +27,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                     <version>1.15.1</version>
                     <executions>
                         <execution>
-                            <id>grunt webserver</id>
+                            <id>grunt devserver</id>
                             <goals>
                                 <goal>grunt</goal>
                             </goals>
                             <phase>generate-resources</phase>
                             <configuration>
-                                <arguments>webserver</arguments>
+                                <arguments>devserver</arguments>
                             </configuration>
                         </execution>
                     </executions>
@@ -54,13 +54,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
                     <version>1.15.1</version>
                     <executions>
                         <execution>
-                            <id>grunt release</id>
+                            <id>grunt production</id>
                             <goals>
                                 <goal>grunt</goal>
                             </goals>
                             <phase>generate-resources</phase>
                             <configuration>
-                                <arguments>release</arguments>
+                                <arguments>production</arguments>
                             </configuration>
                         </execution>
                     </executions>
