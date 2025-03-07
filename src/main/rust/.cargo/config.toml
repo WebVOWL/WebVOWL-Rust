@@ -7,6 +7,7 @@ rustflags = [
     "target-feature=+atomics,+bulk-memory,+mutable-globals",
     "-C",
     "link-arg=--max-memory=4294967296",
+    # "--cfg parallel"
 ]
 
 [unstable]

@@ -23,9 +23,9 @@ function getConfig(args) {
 				import: [
 					`./${paths.webappPath}/test/test.js`
 				],
-				// dependOn: "wasm"
+				// dependOn: "worker"
 			},
-			// wasm: `./${paths.pkgPath}/index.js`
+			// worker: `./${paths.webappPath}/test/worker.js`
 		},
 		output: {
 			path: path.resolve(__dirname, paths.deployPath),
@@ -33,10 +33,10 @@ function getConfig(args) {
 			filename: "js/[name].js",
 			chunkFilename: "js/[chunkhash].js",
 			webassemblyModuleFilename: 'wasm/[id].[hash].wasm',
-			enabledWasmLoadingTypes: ['fetch'],
-			workerChunkLoading: "universal",
-			globalObject: 'this',
-			module: true,
+			// enabledWasmLoadingTypes: ['fetch'],
+			// workerChunkLoading: "universal",
+			// globalObject: 'this',
+			// module: true,
 			// library: {
 			// 	name: 'webvowl',
 			// 	type: 'umd',
@@ -45,8 +45,8 @@ function getConfig(args) {
 		experiments: {
 			// futureDefaults: true,
 			// css: false,
-			outputModule: true,
-			asyncWebAssembly: true
+			// outputModule: true,
+			// asyncWebAssembly: true
 		},
 		optimization: {
 			// splitChunks: {
