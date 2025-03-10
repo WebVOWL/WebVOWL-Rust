@@ -5,7 +5,7 @@ The WebVOWL legacy branch mirrors the [original WebVOWL](https://github.com/Visu
 ## Changes from the original WebVOWL
 
 ### Performance
-[!NOTE]
+> [!NOTE]
 > Performance improvements given in seconds are measured using our reference machine:  
 > Lenovo IdeaPad Gaming 3 15ARH05
 > - CPU: Ryzen 5 4600H  
