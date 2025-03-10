@@ -1,11 +1,9 @@
 # Package project into a WAR file using Maven
 FROM maven:3.6.3-openjdk-8-slim AS build
 RUN mkdir -p /workspace
-RUN "ls -a"
 WORKDIR /workspace
-COPY *.* /workspace/*.*
+COPY *.* /workspace/
 COPY src /workspace/src
-RUN "ls -a"
 RUN mvn -B package --file pom.xml -DskipTests
 
 # Use tomcat java 8 temurin as base image for building the final image
