@@ -8,7 +8,6 @@ RUN mvn -B package --file pom.xml -DskipTests
 
 # Use tomcat java 8 temurin as base image for building the final image
 FROM tomcat:9-jre8-temurin
-RUN apk update && apk upgrade
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
