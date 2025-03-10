@@ -10,13 +10,12 @@ The WebVOWL legacy branch mirrors the [original WebVOWL](https://github.com/Visu
 > Lenovo IdeaPad Gaming 3 15ARH05
 > - CPU: Ryzen 5 4600H  
 > - RAM: 32 GB  
-> - GPU: Geforce GTX 1650 Ti
 
 TODO: Add testing ontology
 
 - Loading an ontology is 60x faster
-- Changing `degrees of collapse` (from 5 and up) is significantly faster (below 5 takes >10 seconds)
-- Rendering thousands of nodes is still rather slow but possible with ~0.5 FPS
+- Changing `degrees of collapse` (from 5 and up) is significantly faster (below 5 still takes >10 seconds)
+- Rendering thousands of nodes is possible with 0.5-5 FPS
 
 ## Run Using Docker
 Make sure you are inside `WebVOWL` directory and you have docker installed. Run the following command to build the docker image:
