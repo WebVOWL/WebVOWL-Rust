@@ -26,6 +26,7 @@ grapher = { version = ">=0.2.3", git = "https://github.com/WebVOWL/RustGrapher.g
 petgraph = "0.6.5"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+horned-owl = { version = "1.0.0", default-features = false }
 glam = "0.29.0"
 console_error_panic_hook = { version = "0.1.7" }                                      #, optional = true }
 getrandom = { version = "0.2", features = ["js"] }
