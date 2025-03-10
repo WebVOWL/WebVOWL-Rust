@@ -125,6 +125,7 @@ module.exports = function (grunt) {
 		webpack: {
 			options: webpackConfig,
 			build: {
+				mode: "production",
 				plugins: webpackConfig.plugins.concat(
 					// minimize the deployed code
 					// new webpack.optimize.UglifyJsPlugin(),
@@ -132,6 +133,7 @@ module.exports = function (grunt) {
 				)
 			},
 			"build-dev": {
+				mode: "development",
 				devtool: "sourcemap",
 				debug: true
 			}
