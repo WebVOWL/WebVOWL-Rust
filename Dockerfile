@@ -10,9 +10,9 @@ RUN mvn -B package --file pom.xml -DskipTests
 # Build the final image
 FROM tomcat:9-jre8-temurin
 ADD bin/OWL2VOWL-*.jar /usr/local/lib/
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache curl inotify-tools \
+RUN apt update \
+    && apt-get upgrade \
+    && apt-get install inotify-tools -y \
     && ln -s /usr/local/lib/OWL2VOWL-*.jar /usr/local/lib/OWL2VOWL.jar 
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
