@@ -21,6 +21,19 @@ function PlainLink( domain, range, property ){
   var backPart = require("./linkPart")(domain, label, this),
     frontPart = require("./linkPart")(label, range, this);
   
+  
+  this.layers = function ( p ){
+    if ( !arguments.length ) return layers;
+    layers = p;
+    return this;
+  };
+  
+  this.layerIndex = function ( p ){
+    if ( !arguments.length ) return layerIndex;
+    layerIndex = p;
+    return this;
+  };
+  
   this.loops = function ( p ){
     if ( !arguments.length ) return loops;
     loops = p;

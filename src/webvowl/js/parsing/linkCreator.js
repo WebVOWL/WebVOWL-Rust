@@ -23,13 +23,7 @@ module.exports = (function (){
       var link = links[i];
       
       const sortedKey = [link.domain(), link.range()].sort().join('|');
-      
-      if(link.domain().label() == "Literal" || link.range().label() == "Literal") {
-        edgeCounts.set(sortedKey, 1);
-      } else {
-        edgeCounts.set(sortedKey, (edgeCounts.get(sortedKey) || 0) + 1);
-      }
-      
+      edgeCounts.set(sortedKey, (edgeCounts.get(sortedKey) || 0) + 1);
       link.key = sortedKey;
 
       countAndSetLoops(link, links);
@@ -77,33 +71,6 @@ module.exports = (function (){
     return links;
   }
   
-  function countAndSetLayers( link, allLinks ){
-    var layer,
-      layers,
-      i, l;
-    
-    if ( typeof link.layers() === "undefined" ) {
-      layers = [];
-      
-      // Search for other links that are another layer
-      for ( i = 0, l = allLinks.length; i < l; i++ ) {
-        var otherLink = allLinks[i];
-        if ( link.domain() === otherLink.domain() && link.range() === otherLink.range() ||
-          link.domain() === otherLink.range() && link.range() === otherLink.domain() ) {
-          layers.push(otherLink);
-        }
-      }
-      link.layers(layers)
-      // Set the results on each of the layers
-      for ( i = 0, l = layers.length; i < l; ++i ) {
-        layer = layers[i];
-        
-        layer.layerIndex(i);
-        layer.layers(layers);
-      }
-    }
-  }
-
   function countAndSetLoops( link, allLinks ){
     var loop,
       loops,
