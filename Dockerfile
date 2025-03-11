@@ -16,7 +16,7 @@ RUN apt-get update \
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
-LABEL org.opencontainers.image.description=A faster WebVOWL
+LABEL org.opencontainers.image.description="A faster WebVOWL"
 VOLUME "/data"
 EXPOSE 8080
 
