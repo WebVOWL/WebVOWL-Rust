@@ -18,8 +18,8 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
 ADD sbin/ /usr/local/sbin
 
+LABEL org.opencontainers.image.description A faster WebVOWL
 VOLUME "/data"
-
 EXPOSE 8080
 
 ENTRYPOINT docker.sh
