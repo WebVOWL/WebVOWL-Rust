@@ -7,12 +7,24 @@ COPY *.* /workspace/
 COPY src /workspace/src
 RUN mvn -B package --file pom.xml -DskipTests
 
-# Use tomcat java 8 temurin as base image for building the final image
+# Build the final image
 FROM tomcat:9-jre8-temurin
+ADD bin/OWL2VOWL-*.jar /usr/local/lib/
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache curl inotify-tools \
+    && ln -s /usr/local/lib/OWL2VOWL-*.jar /usr/local/lib/OWL2VOWL.jar 
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
+ADD sbin/ /usr/local/sbin
+
+VOLUME "/data"
 
 EXPOSE 8080
 
+ENTRYPOINT start.sh
+
+
+
 # Run default server
-CMD ["catalina.sh", "run"]
+# CMD ["catalina.sh", "run"]
