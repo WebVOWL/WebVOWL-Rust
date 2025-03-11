@@ -11,7 +11,6 @@ RUN mvn -B package --file pom.xml -DskipTests
 FROM tomcat:9-jre8-temurin
 ADD bin/OWL2VOWL-*.jar /usr/local/lib/
 ADD docker.sh /usr/local/docker.sh
-ENV PATH="$PATH:/usr/local/docker.sh"
 RUN apt-get update \
     && apt-get install inotify-tools -y \
     && ln -s /usr/local/lib/OWL2VOWL-*.jar /usr/local/lib/OWL2VOWL.jar 
@@ -22,4 +21,4 @@ LABEL org.opencontainers.image.description="A faster WebVOWL"
 VOLUME "/data"
 EXPOSE 8080
 
-ENTRYPOINT ["docker.sh"]
+ENTRYPOINT ["/usr/local/docker.sh"]
