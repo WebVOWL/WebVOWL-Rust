@@ -22,9 +22,4 @@ VOLUME "/data"
 
 EXPOSE 8080
 
-ENTRYPOINT start.sh
-
-
-
-# Run default server
-# CMD ["catalina.sh", "run"]
+ENTRYPOINT docker.sh
