@@ -16,7 +16,6 @@ RUN apt update \
     && ln -s /usr/local/lib/OWL2VOWL-*.jar /usr/local/lib/OWL2VOWL.jar 
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=build /workspace/target/*.war /usr/local/tomcat/webapps/ROOT.war
-ADD sbin/ /usr/local/sbin
 
 LABEL org.opencontainers.image.description A faster WebVOWL
 VOLUME "/data"
