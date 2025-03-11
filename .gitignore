@@ -1,7 +1,11 @@
 # Node.js dependencies
 /node_modules
 /node
-*lock.json
+
+# Build
+target
+package-lock.json
+*.lock
 
 # IntelliJ  files
 *.iml
@@ -11,13 +15,5 @@
 .project
 .classpath
 
-# Build files
-deploy/**
-!deploy/.htaccess
-webvowl*.zip
-
 # NetBeans files
 **/nbproject/**
-
-# Maven build files
-/target

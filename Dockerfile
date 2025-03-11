@@ -1,8 +1,9 @@
 # Package project into a WAR file using Maven
-FROM maven:3.6.3-openjdk-8-slim AS build
+FROM maven:3.6.3-openjdk-8 AS build
+RUN apt-get update && apt-get install bzip2 -y
 RUN mkdir -p /workspace
 WORKDIR /workspace
-COPY pom.xml /workspace
+COPY *.* /workspace/
 COPY src /workspace/src
 RUN mvn -B package --file pom.xml -DskipTests
 
