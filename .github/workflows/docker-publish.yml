@@ -6,10 +6,10 @@ name: Docker
 # documentation.
 
 on:
-  # push:
-  #   branches: [ "legacy" ]
-  #   # Publish semver tags as releases.
-  #   tags: [ 'v*.*.*' ]
+  push:
+    branches: [ "legacy" ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
   pull_request:
     branches: [ "legacy" ]
 
