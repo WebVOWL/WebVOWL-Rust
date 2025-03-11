@@ -18,20 +18,24 @@ module.exports = (function (){
   linkCreator.createLinks = function ( properties ){
     var links = groupPropertiesToLinks(properties);
     
-    let edgeCounts = new Map();
+    let layerCounts = new Map();
     for ( var i = 0, l = links.length; i < l; i++ ) {
       var link = links[i];
       
       const sortedKey = [link.domain(), link.range()].sort().join('|');
-      edgeCounts.set(sortedKey, (edgeCounts.get(sortedKey) || 0) + 1);
-      link.key = sortedKey;
+      if(link.domain().label() == "Literal" || link.range().label() == "Literal") {
+        layerCounts.set(sortedKey, 1);
+      } else {
+        layerCounts.set(sortedKey, (layerCounts.get(sortedKey) || 0) + 1);
+      }
+      link.layerKey = sortedKey;
 
       countAndSetLoops(link, links);
     }
 
     for ( var i = 0, l = links.length; i < l; i++ ) {
       var link = links[i];
-      const layerCount = edgeCounts.get(link.key);
+      const layerCount = layerCounts.get(link.layerKey);
       link.layerSize = layerCount;
     }
     
