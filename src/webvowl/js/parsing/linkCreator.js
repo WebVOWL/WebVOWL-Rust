@@ -19,6 +19,7 @@ module.exports = (function (){
     var links = groupPropertiesToLinks(properties);
     
     let layerCounts = new Map();
+    let loopMap = new Map();
     for ( var i = 0, l = links.length; i < l; i++ ) {
       var link = links[i];
       
@@ -26,13 +27,27 @@ module.exports = (function (){
       layerCounts.set(sortedKey, (layerCounts.get(sortedKey) || 0) + 1);
       link.layerKey = sortedKey;
 
-      countAndSetLoops(link, links);
+      if(link.domain() === link.range()) {
+        const loopKey = link.domain();
+        const loops = loopMap.get(loopKey);
+        if(loops) {
+          loops.push(link);
+        } else {
+          loopMap.set(loopKey, new Array(link));
+        }
+      }
     }
 
     for ( var i = 0, l = links.length; i < l; i++ ) {
       var link = links[i];
       const layerCount = layerCounts.get(link.layerKey);
       link.layerSize = layerCount;
+
+      if(link.domain() === link.range()) {
+        const loops = loopMap.get(link.domain());
+        link.loops(loops);
+        link.loopIndex(loops.findIndex((element) => element === link));
+      }
     }
     
     return links;
@@ -69,36 +84,6 @@ module.exports = (function (){
     }
     
     return links;
-  }
-  
-  function countAndSetLoops( link, allLinks ){
-    var loop,
-      loops,
-      i, l;
-    
-    if ( typeof link.loops() === "undefined" ) {
-      loops = [];
-      if (link.domain() === link.range()) {
-        loops.push(link)
-        link.loops(loops)
-      }
-      
-      // Search for other links that are also loops of the same node
-      // for ( i = 0, l = allLinks.length; i < l; i++ ) {
-      //   var otherLink = allLinks[i];
-      //   if ( link.domain() === otherLink.domain() && link.domain() === otherLink.range() ) {
-      //     loops.push(otherLink);
-      //   }
-      // }
-      
-      // // Set the results on each of the loops
-      // for ( i = 0, l = loops.length; i < l; ++i ) {
-      //   loop = loops[i];
-        
-      //   loop.loopIndex(i);
-      //   loop.loops(loops);
-      // }
-    }
   }
   
   function createLink( property ){
