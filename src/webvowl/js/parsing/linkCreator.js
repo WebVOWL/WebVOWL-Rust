@@ -22,12 +22,8 @@ module.exports = (function (){
     for ( var i = 0, l = links.length; i < l; i++ ) {
       var link = links[i];
       
-      const sortedKey = [link.domain(), link.range()].sort().join('|');
-      if(link.domain().label() == "Literal" || link.range().label() == "Literal") {
-        layerCounts.set(sortedKey, 1);
-      } else {
-        layerCounts.set(sortedKey, (layerCounts.get(sortedKey) || 0) + 1);
-      }
+      const sortedKey = [link.domain().id(), link.range().id()].sort().join('|');
+      layerCounts.set(sortedKey, (layerCounts.get(sortedKey) || 0) + 1);
       link.layerKey = sortedKey;
 
       countAndSetLoops(link, links);
