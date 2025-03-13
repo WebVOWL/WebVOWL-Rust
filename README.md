@@ -1,7 +1,7 @@
-# A new WebVOWL
-This repository is home to a new WebVOWL which comes in two flavours: [WebVOWL Rust](https://github.com/WebVOWL/WebVOWL/tree/rust) and [WebVOWL Legacy](https://github.com/WebVOWL/WebVOWL/tree/legacy)
-
 # WebVOWL Rust
+> [!NOTE]
+> We are developing two flavours of WebVOWL: [WebVOWL Rust](https://github.com/WebVOWL/WebVOWL/tree/rust) and [WebVOWL Legacy](https://github.com/WebVOWL/WebVOWL/tree/legacy)
+
 This branch tracks development of WebVOWL Rust, which is a total rewrite of WebVOWL in Rust. 
 
 The rewrite must satisfy the following:
