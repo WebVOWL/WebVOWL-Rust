@@ -1,11 +1,11 @@
-# WebVOWL
-This is a fork of WebVOWL which focuses on addressing the slow performance of the original WebVOWL in an effort to make WebVOWL great again.
+# WebVOWL Rust
+This branch tracks development of WebVOWL Rust, which is a total rewrite of WebVOWL in Rust. 
+
+The rewrite must satisfy the following:
+- The GUI must be similar to the [original WebVOWL](https://github.com/VisualDataWeb/WebVOWL)
 
 ## Run using Docker
-Make sure you are inside the `WebVOWL` directory and you have docker installed.  
-Run `docker build . -t webvowl:v1` to build the docker image.  
-Run `docker-compose up -d` to start the WebVOWL server at port 8080.  
-Visit [http://localhost:8080](http://localhost:8080) to use WebVOWL.
+TBD
 
 ## Development setup
 1. Install Maven from https://maven.apache.org/download.cgi
