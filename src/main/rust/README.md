@@ -1,2 +1,2 @@
-# Vowlgrapher
-The Rust frontend/backend for WebVOWL
+# WebVOWL Rust
+The Rust implementation of WebVOWL
