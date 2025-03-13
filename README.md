@@ -1,6 +1,6 @@
 # WebVOWL Rust
 > [!NOTE]
-> We are developing two flavours of WebVOWL: [WebVOWL Rust](https://github.com/WebVOWL/WebVOWL/tree/rust) and [WebVOWL Legacy](https://github.com/WebVOWL/WebVOWL/tree/legacy)
+> We are developing two flavours of WebVOWL: [WebVOWL Rust](https://github.com/WebVOWL/WebVOWL-Rust) and [WebVOWL Legacy](https://github.com/WebVOWL/WebVOWL-Legacy)
 
 This branch tracks development of WebVOWL Rust, which is a total rewrite of WebVOWL in Rust. 
 
