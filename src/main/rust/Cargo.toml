@@ -1,16 +1,16 @@
 [package]
-name = "vowlgrapher"
+name = "webvowl"
 version = "0.0.1"
 edition = "2024"
 authors = ["Kneckerino", "KristianEmilWN", "nikarnik", "TheRealMorgenfrue"]
 repository = "https://github.com/WebVOWL/WebVOWL"
 license-file = "LICENSE"
 readme = "README.md"
-description = "WebVOWL backend"
+description = "The Rust implementation of WebVOWL"
 keywords = ["graph", "vowl", "ontology", "force-directed-graph"]
 
 [lib]
-name = "vowlgrapher_lib"
+name = "webvowl_lib"
 crate-type = ["cdylib", "rlib"]
 
 [profile.release]
