@@ -5,9 +5,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <modelVersion>4.0.0</modelVersion>
 
  <groupId>com.github.WebVOWL</groupId>
- <artifactId>WebVOWL</artifactId>
- <version>1.1.8</version>
- <name>WebVOWL</name>
+ <artifactId>WebVOWL.Rust</artifactId>
+ <version>0.0.1</version>
+ <name>WebVOWL Rust</name>
  <packaging>war</packaging>
 
  <properties>
