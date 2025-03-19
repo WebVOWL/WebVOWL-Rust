@@ -1,3 +1,4 @@
+const { find } = require("lodash");
 var _ = require("lodash/core");
 var math = require("./util/math")();
 var linkCreator = require("./parsing/linkCreator")();
@@ -1499,6 +1500,9 @@ module.exports = function (graphContainerSelector) {
     }
   };
 
+  // Store unfiltered nodes for use in search
+  var allNodes;
+
   graph.setFilterWarning = function (val) {
     showFilterWarning = val;
   };
@@ -1644,6 +1648,9 @@ module.exports = function (graphContainerSelector) {
     var initializationData = _.clone(unfilteredData);
     links = linkCreator.createLinks(initializationData.properties);
     storeLinksOnNodes(initializationData.nodes, links);
+
+    allNodes = initializationData.nodes; // Keep this data for searching
+
     options.filterModules().forEach(function (module) {
       initializationData = filterFunction(module, initializationData, true);
     });
@@ -1724,6 +1731,66 @@ module.exports = function (graphContainerSelector) {
     };
   }
 
+  /** --------------------------------------------------------- **/
+  /** --  Breadth First Search to a certain depth            -- **/
+  /** --------------------------------------------------------- **/
+  // TODO - introduce hashmap for further perfomance 
+  function BFSearchWithDepth(nodes, id, depth) {
+    let originNode;
+
+    try {
+      originNode = findNodeFromId(nodes, id);
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
+    let visited = [];
+    let nextArray = [originNode];
+
+    for (let i = 0; i <= depth; i++) { // For every depth
+
+      let layerNodesAmount = nextArray.length;
+
+      for (let j = 0; j < layerNodesAmount; j++) { // For every Node
+
+        let currentNode = nextArray[j];
+        let linkArr = currentNode.links();
+
+        for (let k = 0; k < linkArr.length; k++) { // For every Edge
+
+          let currentLink = linkArr[k];
+          let domainNode = currentLink.domain();
+          let rangeNode = currentLink.range();
+          
+          // If the edge is connected to our current node, add the other end of the edge only if it hasn't already been visited or appended to our frontier
+          if (domainNode === currentNode) {
+            if ( !visited.includes(rangeNode) && !nextArray.includes(rangeNode) ) 
+                 nextArray.push(rangeNode);
+          }
+          else if (currentLink.range() === currentNode) {
+            if ( !visited.includes(domainNode) && !nextArray.includes(domainNode) )
+                 nextArray.push(domainNode);
+          }
+        
+        }
+        
+      }
+      nextArray = nextArray.filter( (x) => !visited.includes(x) )
+      visited.push(...nextArray);
+    }
+    return visited;
+  }
+
+  function findNodeFromId (nodes, id) {
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].id() == id) {
+        return nodes[i];
+      }
+    }
+    throw new Error ("node with this id does not exist");
+  }
+  
 
   /** --------------------------------------------------------- **/
   /** -- force-layout related functions                      -- **/
